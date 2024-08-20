@@ -5,6 +5,11 @@ type HeaderLoginProps = {
 };
 
 export default function HeaderLogin({ toggleCard, card }: HeaderLoginProps) {
+  /**
+   * Depends on the link and name of the card give some tailwind classes
+   * @param link the cardname 
+   * @returns the tailwind css classes to be added
+   */
   const linkClasses = (link: string) =>
     `hover:text-blue-400 font-bold text-sm sm:text-md md:text-lg transition duration-300 ease-in-out ${
       card === link
@@ -33,10 +38,7 @@ export default function HeaderLogin({ toggleCard, card }: HeaderLoginProps) {
         >
           Singup
         </a>
-        <a
-          onClick={() => toggleCard("login")}
-          className={linkClasses("login")}
-        >
+        <a onClick={() => toggleCard("login")} className={linkClasses("login")}>
           Login
         </a>
       </nav>

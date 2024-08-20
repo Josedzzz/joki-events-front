@@ -5,8 +5,13 @@ import SingupCard from "./SingupCart";
 import AboutCard from "./AboutCard";
 
 export default function Login() {
+  // use state to set the window card of the login
   const [card, setCard] = useState<string>("login");
 
+  /**
+   * change the window content on the menu based in the card name
+   * @param cardName the name of the card to be displayed
+   */
   const toggleCard = (cardName: string) => {
     setCard(cardName);
   };
