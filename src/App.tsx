@@ -1,8 +1,10 @@
-import './index.css'
+import "./index.css";
 import Login from "./components/Login.tsx";
 
 export default function App() {
   return (
-    <Login />
-  )
+    <div className="bg-custom-dark min-h-screen">
+      <Login />
+    </div>
+  );
 }
