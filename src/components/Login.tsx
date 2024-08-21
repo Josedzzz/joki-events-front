@@ -17,7 +17,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-custom-dark flex flex-col">
+    <div className="min-h-screen bg-custom-black flex flex-col">
       <HeaderLogin toggleCard={toggleCard} card={card} />
       {card === "login" && <LoginCard />}
       {card === "singup" && <SingupCard />}
