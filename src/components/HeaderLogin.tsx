@@ -18,7 +18,7 @@ export default function HeaderLogin({ toggleCard, card }: HeaderLoginProps) {
     }`;
 
   return (
-    <header className="mt-3 h-12 w-full flex justify-between items-center max-w-3xl mx-auto p-2">
+    <header className="mt-3 h-12 w-full flex justify-between items-center max-w-3xl mx-auto p-2 appearr">
       <div className="flex items-center space-x-1 gap-3">
         <h1 className="text-xl sm:text-3xl md:text-4xl text-slate-50 font-bold">
           Joki Events
