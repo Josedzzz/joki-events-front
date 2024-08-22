@@ -1,6 +1,6 @@
 export default function SignupCard() {
   return (
-    <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-2">
+    <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-2 show-animation">
       <div className="w-full max-w-md bg-custom-dark p-6 shadow-lg rounded-lg">
         <h2 className="text-xl font-bold text-blue-400 text-center mb-4">
           Sign Up
