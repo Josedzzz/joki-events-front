@@ -4,6 +4,7 @@ import { login } from "../services/loginService";
 export default function LoginCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -16,14 +17,27 @@ export default function LoginCard() {
     setError("");
     setSuccess("");
 
-    try {
-      const userId = await login({ email, password });
-      setSuccess(`Welcome, user with ID: ${userId}!`);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("An unexpected error occurred.");
+    if (!isAdmin) {
+      try {
+        const userId = await login({ email, password }, "clients");
+        setSuccess(`Welcome, user with ID: ${userId}!`);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred.");
+        }
+      }
+    } else {
+      try {
+        const userId = await login({ email, password }, "admins");
+        setSuccess(`Welcome, admin with ID: ${userId}!`);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred.");
+        }
       }
     }
   };
@@ -67,6 +81,20 @@ export default function LoginCard() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <div className="mb-6">
+            <label className="flex items-center text-slate-50 font-bold mb-2 cursor-pointer">
+              <input
+                type="checkbox"
+                className="h-4 w-4 rounded-md mr-2"
+                checked={isAdmin}
+                onChange={() => setIsAdmin(!isAdmin)}
+              />
+              <span className="flex items-center">
+                I am an admin{" "}
+                <i className="fa-solid fa-user-tie ml-2 text-slate-50"></i>
+              </span>
+            </label>
+          </div>
           <div className="flex items-center justify-between">
             <button
               type="submit"
@@ -83,7 +111,7 @@ export default function LoginCard() {
         )}
 
         <p className="text-gray-600 text-sm text-center mt-6">
-          Don't have an account? Just sign up
+          Don't have an account? Just signup
         </p>
       </div>
     </main>
