@@ -28,7 +28,7 @@ export default function LoginCard() {
         localStorage.setItem("adminId", userId);
         navigate("/admin-dashboard");
       } else {
-        setSuccess(`Welcome, user with ID: ${userId}!`);
+        localStorage.setItem("userId", userId);
         navigate("/user-dashboard")
       }
     } catch (error) {
