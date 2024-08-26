@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { login } from "../services/loginService";
 
 export default function LoginCard() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
@@ -17,27 +19,23 @@ export default function LoginCard() {
     setError("");
     setSuccess("");
 
-    if (!isAdmin) {
-      try {
-        const userId = await login({ email, password }, "clients");
+    try {
+      const userId = await login(
+        { email, password },
+        isAdmin ? "admins" : "clients"
+      );
+      if (isAdmin) {
+        localStorage.setItem("adminId", userId);
+        navigate("/admin-dashboard");
+      } else {
         setSuccess(`Welcome, user with ID: ${userId}!`);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred.");
-        }
+        navigate("/user-dashboard")
       }
-    } else {
-      try {
-        const userId = await login({ email, password }, "admins");
-        setSuccess(`Welcome, admin with ID: ${userId}!`);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred.");
-        }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
       }
     }
   };
