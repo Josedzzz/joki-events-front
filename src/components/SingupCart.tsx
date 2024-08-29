@@ -11,6 +11,20 @@ export default function SignupCard() {
               className="block text-slate-50 font-bold mb-1 text-sm"
               htmlFor="name"
             >
+              <i className="fa-regular fa-id-card"></i> Id-card
+            </label>
+            <input
+              type="text"
+              id="id-card"
+              className="bg-custom-gray text-slate-50 w-full px-2 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+              placeholder="Enter your id"
+            />
+          </div>
+          <div className="mb-3">
+            <label
+              className="block text-slate-50 font-bold mb-1 text-sm"
+              htmlFor="name"
+            >
               <i className="fa-solid fa-user"></i> Name
             </label>
             <input
