@@ -1,7 +1,7 @@
 import { useState } from "react";
 import HeaderLogin from "./HeaderLogin";
 import LoginCard from "./LoginCard";
-import SingupCard from "./SingupCart";
+import SignupCart from "./SingupCart";
 import AboutCard from "./AboutCard";
 
 export default function Login() {
@@ -20,7 +20,7 @@ export default function Login() {
     <div className="min-h-screen bg-custom-black flex flex-col">
       <HeaderLogin toggleCard={toggleCard} card={card} />
       {card === "login" && <LoginCard />}
-      {card === "singup" && <SingupCard />}
+      {card === "singup" && <SignupCart />}
       {card === "aboutus" && <AboutCard />}
     </div>
   );

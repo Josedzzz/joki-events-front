@@ -36,7 +36,7 @@ export default function HeaderLogin({ toggleCard, card }: HeaderLoginProps) {
           onClick={() => toggleCard("singup")}
           className={linkClasses("singup")}
         >
-          Singup
+          Sign up
         </a>
         <a onClick={() => toggleCard("login")} className={linkClasses("login")}>
           Login
