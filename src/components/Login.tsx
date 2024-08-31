@@ -1,8 +1,8 @@
 import { useState } from "react";
 import HeaderLogin from "./HeaderLogin";
 import LoginCard from "./LoginCard";
-import SignupCart from "./SingupCart";
 import AboutCard from "./AboutCard";
+import SignupCard from "./SingupCard";
 
 export default function Login() {
   // use state to set the window card of the login
@@ -20,7 +20,7 @@ export default function Login() {
     <div className="min-h-screen bg-custom-black flex flex-col">
       <HeaderLogin toggleCard={toggleCard} card={card} />
       {card === "login" && <LoginCard />}
-      {card === "singup" && <SignupCart />}
+      {card === "singup" && <SignupCard />}
       {card === "aboutus" && <AboutCard />}
     </div>
   );
