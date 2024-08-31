@@ -29,7 +29,7 @@ export default function LoginCard() {
         navigate("/admin-dashboard");
       } else {
         localStorage.setItem("userId", userId);
-        navigate("/user-dashboard")
+        navigate("/user-dashboard");
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -109,7 +109,7 @@ export default function LoginCard() {
         )}
 
         <p className="text-gray-600 text-sm text-center mt-6">
-          Don't have an account? Just signup
+          Forgot your password? Click here
         </p>
       </div>
     </main>
