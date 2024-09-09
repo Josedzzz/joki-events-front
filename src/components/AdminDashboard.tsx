@@ -1,8 +1,9 @@
 import { useState } from "react";
-import AdminLeftPanel from "./AdminLeftPanel";
 import AdminEvents from "./AdminEvents";
 import AdminCoupons from "./AdminCoupons";
 import AdminReports from "./AdminReports";
+import AdminHeader from "./AdminHeader";
+import AdminAccount from "./AdminAccount";
 export default function AdminDashboard() {
   // use state to set the content
   const [content, setContent] = useState<string>("event");
@@ -16,11 +17,12 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-custom-black flex flex-row">
-      <AdminLeftPanel toggleContent={toggleContent} content={content} />
-      {content === "event" && <AdminEvents />}
-      {content === "coupon" && <AdminCoupons />}
-      {content === "report" && <AdminReports />}
+    <div className="min-h-screen bg-custom-black flex flex-col">
+      <AdminHeader toggleContent={toggleContent} content={content} />
+      {content === "events" && <AdminEvents />}
+      {content === "coupons" && <AdminCoupons />}
+      {content === "reports" && <AdminReports />}
+      {content === "account" && <AdminAccount />}
     </div>
   );
 }
