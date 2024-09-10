@@ -6,7 +6,7 @@ import AdminHeader from "./AdminHeader";
 import AdminAccount from "./AdminAccount";
 export default function AdminDashboard() {
   // use state to set the content
-  const [content, setContent] = useState<string>("event");
+  const [content, setContent] = useState<string>("events");
 
   /**
    * change the window content on the menu
