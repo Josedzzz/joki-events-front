@@ -1,12 +1,20 @@
 import { Event } from "./AdminEvents";
 
+// Interface for the props of the component
 interface AdminEventCardProps {
   event: Event;
+  onClick: () => void;
 }
 
-export default function AdminEventCard({ event }: AdminEventCardProps) {
+export default function AdminEventCard({
+  event,
+  onClick,
+}: AdminEventCardProps) {
   return (
-    <div className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 transition duration-300 ease-in-out">
+    <div
+      onClick={onClick}
+      className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 transition duration-300 ease-in-out"
+    >
       <img
         className="w-full h-32 sm:h-48 object-cover"
         src={event.imageUrl}
