@@ -12,6 +12,7 @@ export interface Event {
   eventDate: string;
   totalAvailableQuantity: number;
   imageUrl: string;
+  localityImageUrl: string;
 }
 
 export default function AdminEvents() {
@@ -25,6 +26,7 @@ export default function AdminEvents() {
       eventDate: "2024-10-05T18:00",
       totalAvailableQuantity: 10,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "2",
@@ -35,6 +37,7 @@ export default function AdminEvents() {
       eventDate: "2024-09-20T10:00",
       totalAvailableQuantity: 200,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "3",
@@ -45,6 +48,7 @@ export default function AdminEvents() {
       eventDate: "2024-11-15T09:00",
       totalAvailableQuantity: 34,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "4",
@@ -55,6 +59,7 @@ export default function AdminEvents() {
       eventDate: "2024-12-01T12:00",
       totalAvailableQuantity: 45,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "5",
@@ -65,6 +70,7 @@ export default function AdminEvents() {
       eventDate: "2024-10-05T18:00",
       totalAvailableQuantity: 10,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "6",
@@ -75,6 +81,7 @@ export default function AdminEvents() {
       eventDate: "2024-09-20T10:00",
       totalAvailableQuantity: 200,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "7",
@@ -85,6 +92,7 @@ export default function AdminEvents() {
       eventDate: "2024-11-15T09:00",
       totalAvailableQuantity: 34,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
     {
       id: "8",
@@ -95,6 +103,7 @@ export default function AdminEvents() {
       eventDate: "2024-12-01T12:00",
       totalAvailableQuantity: 45,
       imageUrl: "/event.jpg",
+      localityImageUrl: "/event.jpg",
     },
   ];
 
