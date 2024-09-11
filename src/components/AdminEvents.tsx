@@ -22,7 +22,7 @@ export default function AdminEvents() {
       city: "Los Angeles",
       eventDate: "2024-10-05T18:00",
       totalAvailableQuantity: 10,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "2",
@@ -32,7 +32,7 @@ export default function AdminEvents() {
       city: "New York",
       eventDate: "2024-09-20T10:00",
       totalAvailableQuantity: 200,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "3",
@@ -42,7 +42,7 @@ export default function AdminEvents() {
       city: "San Francisco",
       eventDate: "2024-11-15T09:00",
       totalAvailableQuantity: 34,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "4",
@@ -52,7 +52,7 @@ export default function AdminEvents() {
       city: "Chicago",
       eventDate: "2024-12-01T12:00",
       totalAvailableQuantity: 45,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "5",
@@ -62,7 +62,7 @@ export default function AdminEvents() {
       city: "Los Angeles",
       eventDate: "2024-10-05T18:00",
       totalAvailableQuantity: 10,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "6",
@@ -72,7 +72,7 @@ export default function AdminEvents() {
       city: "New York",
       eventDate: "2024-09-20T10:00",
       totalAvailableQuantity: 200,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "7",
@@ -82,7 +82,7 @@ export default function AdminEvents() {
       city: "San Francisco",
       eventDate: "2024-11-15T09:00",
       totalAvailableQuantity: 34,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
     {
       id: "8",
@@ -92,7 +92,7 @@ export default function AdminEvents() {
       city: "Chicago",
       eventDate: "2024-12-01T12:00",
       totalAvailableQuantity: 45,
-      imageUrl: "public/event.jpg",
+      imageUrl: "/event.jpg",
     },
   ];
 
