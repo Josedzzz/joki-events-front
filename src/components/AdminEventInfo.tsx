@@ -235,7 +235,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
           {event && (
             <button
               type="button"
-              className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              className="text-red-500 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
             >
               <i className="fa-solid fa-trash mr-1"></i> Delete
             </button>
