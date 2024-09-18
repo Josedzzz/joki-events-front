@@ -1,3 +1,4 @@
+import UserEventLocality from "./UserEventLocality";
 import { Locality, UserEvent } from "./UserEvents";
 
 // Interface for the props of the component
@@ -91,20 +92,7 @@ export default function UserEventInfo({
         <h3 className="text-xl font-bold text-slate-50">Localities</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
           {userEvent.localities.map((locality: Locality) => (
-            <div
-              key={locality.id}
-              className="bg-custom-gray p-4 rounded-lg shadow-md transition-transform transform hover:scale-105"
-            >
-              <h4 className="text-lg text-slate-50 font-semibold text-center">
-                {locality.name}
-              </h4>
-              <p className="text-slate-200 text-sm text-center">
-                Price: ${locality.price}
-              </p>
-              <p className="text-slate-200 text-sm text-center">
-                Capacity: {locality.currentCapacity} / {locality.maxCapacity}
-              </p>
-            </div>
+            <UserEventLocality key={locality.id} locality={locality} />
           ))}
         </div>
 
