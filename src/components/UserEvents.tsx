@@ -2,10 +2,19 @@ import { useState } from "react";
 import UserEventCatd from "./UserEventCard";
 import UserEventInfo from "./UserEventInfo";
 
+// Interface for the event localities
+export interface Locality {
+  id: string;
+  name: string;
+  price: number;
+  maxCapacity: number;
+  currentCapacity: number;
+}
+
 // Interface for the user events
 export interface UserEvent {
   id: string;
-  idDistributionLocality: string[];
+  localities: Locality[];
   name: string;
   address: string;
   city: string;
@@ -19,7 +28,22 @@ export default function UserEvents() {
   const eventsData: UserEvent[] = [
     {
       id: "1",
-      idDistributionLocality: ["loc1", "loc2"],
+      localities: [
+        {
+          id: "loc1",
+          name: "VIP",
+          price: 100,
+          maxCapacity: 500,
+          currentCapacity: 450,
+        },
+        {
+          id: "loc2",
+          name: "General",
+          price: 50,
+          maxCapacity: 1000,
+          currentCapacity: 750,
+        },
+      ],
       name: "Music Festival",
       address: "123 Main St",
       city: "Los Angeles",
@@ -30,7 +54,15 @@ export default function UserEvents() {
     },
     {
       id: "2",
-      idDistributionLocality: ["loc3"],
+      localities: [
+        {
+          id: "loc3",
+          name: "Art Section",
+          price: 80,
+          maxCapacity: 300,
+          currentCapacity: 200,
+        },
+      ],
       name: "Art Expo",
       address: "456 Elm St",
       city: "New York",
@@ -41,7 +73,15 @@ export default function UserEvents() {
     },
     {
       id: "3",
-      idDistributionLocality: ["loc4"],
+      localities: [
+        {
+          id: "loc4",
+          name: "Tech Hall",
+          price: 120,
+          maxCapacity: 400,
+          currentCapacity: 300,
+        },
+      ],
       name: "Tech Conference",
       address: "789 Oak St",
       city: "San Francisco",
@@ -52,51 +92,22 @@ export default function UserEvents() {
     },
     {
       id: "4",
-      idDistributionLocality: ["loc5", "loc6"],
-      name: "Food Fair",
-      address: "101 Maple St",
-      city: "Chicago",
-      eventDate: "2024-12-01T12:00",
-      totalAvailableQuantity: 45,
-      imageUrl: "/event.jpg",
-      localityImageUrl: "/event.jpg",
-    },
-    {
-      id: "5",
-      idDistributionLocality: ["loc1", "loc2"],
-      name: "Music Festival",
-      address: "123 Main St",
-      city: "Los Angeles",
-      eventDate: "2024-10-05T18:00",
-      totalAvailableQuantity: 10,
-      imageUrl: "/event.jpg",
-      localityImageUrl: "/event.jpg",
-    },
-    {
-      id: "6",
-      idDistributionLocality: ["loc3"],
-      name: "Art Expo",
-      address: "456 Elm St",
-      city: "New York",
-      eventDate: "2024-09-20T10:00",
-      totalAvailableQuantity: 200,
-      imageUrl: "/event.jpg",
-      localityImageUrl: "/event.jpg",
-    },
-    {
-      id: "7",
-      idDistributionLocality: ["loc4"],
-      name: "Tech Conference",
-      address: "789 Oak St",
-      city: "San Francisco",
-      eventDate: "2024-11-15T09:00",
-      totalAvailableQuantity: 34,
-      imageUrl: "/event.jpg",
-      localityImageUrl: "/event.jpg",
-    },
-    {
-      id: "8",
-      idDistributionLocality: ["loc5", "loc6"],
+      localities: [
+        {
+          id: "loc5",
+          name: "Food Plaza",
+          price: 30,
+          maxCapacity: 600,
+          currentCapacity: 500,
+        },
+        {
+          id: "loc6",
+          name: "VIP Food Plaza",
+          price: 60,
+          maxCapacity: 200,
+          currentCapacity: 150,
+        },
+      ],
       name: "Food Fair",
       address: "101 Maple St",
       city: "Chicago",
