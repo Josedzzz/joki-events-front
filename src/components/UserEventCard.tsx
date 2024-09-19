@@ -13,7 +13,7 @@ export default function UserEventCatd({
   return (
     <div
       onClick={onClick}
-      className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 transition duration-300 ease-in-out"
+      className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 hover:scale-105 transition duration-300 ease-in-out"
     >
       <img
         className="w-full h-32 sm:h-48 object-cover"
