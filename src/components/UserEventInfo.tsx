@@ -12,7 +12,7 @@ export default function UserEventInfo({
   onBack,
 }: UserEventInfoProps) {
   return (
-    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto w-full mt-6">
+    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto w-full mt-6 mb-6">
       {/* Button to go back */}
       <button
         onClick={onBack}
@@ -107,6 +107,13 @@ export default function UserEventInfo({
             className="w-full h-64 object-cover rounded-lg shadow-lg"
           />
         </div>
+
+        <button
+          onClick={onBack}
+          className="mt-4 text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out"
+        >
+          <i className="fa-solid fa-arrow-left mr-1"></i> Add to cart
+        </button>
       </div>
     </div>
   );
