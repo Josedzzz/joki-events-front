@@ -1,17 +1,4 @@
-// Interface for the admin
-interface Admin {
-  username: string;
-  email: string;
-}
-
 export default function AdminAccount() {
-  const adminData: Admin[] = [
-    {
-      username: "Danielito",
-      email: "danielito@email",
-    },
-  ];
-
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center">
       <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-xl mx-auto flex flex-col">
@@ -28,7 +15,7 @@ export default function AdminAccount() {
             </label>
             <input
               type="email"
-              id="username"
+              id="email"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your new email"
             />
