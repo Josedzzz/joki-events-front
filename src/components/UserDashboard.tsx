@@ -3,6 +3,7 @@ import UserHeader from "./UserHeader";
 import UserEvents from "./UserEvents";
 import UserCart from "./UserCart";
 import UserAccount from "./UserAccount";
+import UserHistory from "./UserHistory";
 
 export default function UserDashboard() {
   // useState to set the content
@@ -21,6 +22,7 @@ export default function UserDashboard() {
       <UserHeader toggleContent={toggleContent} content={content} />
       {content === "events" && <UserEvents />}
       {content === "cart" && <UserCart />}
+      {content === "history" && <UserHistory />}
       {content === "account" && <UserAccount />}
     </div>
   );
