@@ -42,6 +42,12 @@ export default function UserHeader({
           Cart
         </a>
         <a
+          onClick={() => toggleContent("history")}
+          className={linkClasses("history")}
+        >
+          History
+        </a>
+        <a
           onClick={() => toggleContent("account")}
           className={linkClasses("account")}
         >
