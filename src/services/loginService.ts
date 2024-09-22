@@ -1,14 +1,24 @@
-interface LoginCredentials {
+interface LoginCredentialsUser {
   email: string;
   password: string;
 }
 
+interface LoginCredentialsAdmin {
+  username: string;
+  password: string;
+}
+
 interface SuccessResponse {
-  id: string;
+  status: string;
+  message: string;
+  data: string;
+  token: string;
 }
 
 interface ErrorResponse {
+  status: string;
   message: string;
+  data: string;
 }
 
 /**
@@ -17,19 +27,19 @@ interface ErrorResponse {
  * @returns the id of the client in a json
  */
 export const login = async (
-  credentials: LoginCredentials,
-  typeUser: string
-): Promise<string> => {
+  credentials: LoginCredentialsUser | LoginCredentialsAdmin,
+  typeUser: string,
+): Promise<SuccessResponse> => {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/${typeUser}/login`,
+      `http://localhost:8080/auth/login-${typeUser}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -41,9 +51,9 @@ export const login = async (
     // Read the response as a json
     const loginResponse: SuccessResponse = await response.json();
 
-    // chek that the json contains an id
-    if ("id" in loginResponse) {
-      return loginResponse.id;
+    // chek that the json contains a token for the login
+    if ("token" in loginResponse) {
+      return loginResponse;
     } else {
       throw new Error("Unexpected response format");
     }
