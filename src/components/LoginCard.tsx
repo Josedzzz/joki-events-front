@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/loginService";
+import Cookies from "js-cookie";
 
 export default function LoginCard() {
   const navigate = useNavigate();
@@ -20,15 +21,25 @@ export default function LoginCard() {
     setSuccess("");
 
     try {
-      const userId = await login(
-        { email, password },
-        isAdmin ? "admins" : "clients"
-      );
       if (isAdmin) {
-        localStorage.setItem("adminId", userId);
+        const { message, data, token } = await login(
+          { username: email, password },
+          "admin",
+        );
+        localStorage.setItem("adminId", data);
+        // Set a cookie that expires in 1 day for the authToken
+        Cookies.set("authToken", token, { expires: 1 });
+        setSuccess(message);
         navigate("/admin-dashboard");
       } else {
-        localStorage.setItem("userId", userId);
+        const { message, data, token } = await login(
+          { email, password },
+          "client",
+        );
+        localStorage.setItem("userId", data);
+        // Set a cookie that expires in 1 day for the authToken
+        Cookies.set("authToken", token, { expires: 1 });
+        setSuccess(message);
         navigate("/user-dashboard");
       }
     } catch (error) {
