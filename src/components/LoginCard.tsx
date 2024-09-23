@@ -12,6 +12,34 @@ export default function LoginCard() {
   const [success, setSuccess] = useState("");
 
   /**
+   * Helper function to validate the email format
+   * @param email the emial to be validate
+   * @returns
+   */
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  /**
+   * Helper function to validate the admin username (at least 3 characters)
+   * @param username the username to be validate
+   * @returns
+   */
+  const validateUsername = (username: string) => {
+    return username.length >= 3;
+  };
+
+  /**
+   * Helper function to validate the password (at least 4 characters)
+   * @param password the password to be validate
+   * @returns
+   */
+  const validatePassword = (password: string) => {
+    return password.length >= 4;
+  };
+
+  /**
    * Handles the submission of the login form
    * @param e the form submission event
    */
@@ -22,6 +50,16 @@ export default function LoginCard() {
 
     try {
       if (isAdmin) {
+        // Validation before submission
+        if (!validateUsername(email)) {
+          setError("Username must be at least 3 characters long");
+          return;
+        }
+        if (!validatePassword(password)) {
+          setError("Password must be at least 4 characters long");
+          return;
+        }
+
         const { message, data, token } = await login(
           { username: email, password },
           "admin",
@@ -32,6 +70,15 @@ export default function LoginCard() {
         setSuccess(message);
         navigate("/admin-dashboard");
       } else {
+        if (!validateEmail(email)) {
+          setError("Please enter a valid email address");
+          return;
+        }
+        if (!validatePassword(password)) {
+          setError("Password must be at least 4 characters long");
+          return;
+        }
+
         const { message, data, token } = await login(
           { email, password },
           "client",
