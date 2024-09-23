@@ -8,11 +8,16 @@ interface signupCredentials {
 }
 
 interface SuccessResponse {
-  id: string;
+  status: string;
+  message: string;
+  data: string;
+  token: string;
 }
 
 interface ErrorResponse {
+  status: string;
   message: string;
+  data: string;
 }
 
 /**
@@ -21,10 +26,10 @@ interface ErrorResponse {
  * @returns  the id of the client in a json
  */
 export const signup = async (
-  credentials: signupCredentials
-): Promise<string> => {
+  credentials: signupCredentials,
+): Promise<SuccessResponse> => {
   try {
-    const response = await fetch("http://localhost:3000/api/clients/register", {
+    const response = await fetch("http://localhost:8080/auth/register-client", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,15 +40,15 @@ export const signup = async (
     if (!response.ok) {
       // Handle the error response
       const errorResponse: ErrorResponse = await response.json();
-      throw new Error(errorResponse.message); 
+      throw new Error(errorResponse.message);
     }
 
     // Read the response as a json
     const signupResponse: SuccessResponse = await response.json();
 
-    // Check that the json contains an id
-    if ("id" in signupResponse) {
-      return signupResponse.id;
+    // Check that the json contains a token for the sign up
+    if ("token" in signupResponse) {
+      return signupResponse;
     } else {
       throw new Error("Unexpected response format");
     }
