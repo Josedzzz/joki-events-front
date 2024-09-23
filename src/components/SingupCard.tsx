@@ -13,6 +13,64 @@ export default function SignupCard() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  /**
+   * Helper function to validate that the idCard only contains numbers and at least 3 digits long
+   * @param idCard the idCart to be validate
+   * @returns
+   */
+  const validateIdCard = (idCard: string) => {
+    const idCardRegex = /^[0-9]+$/;
+    return idCardRegex.test(idCard) && idCard.length >= 3;
+  };
+
+  /**
+   * Helper function to validate the user name (at least 3 characters)
+   * @param name the username to be validate
+   * @returns
+   */
+  const validateName = (name: string) => {
+    return name.length >= 3;
+  };
+
+  /**
+   * Helper function to validate the user address (at least 3 characters)
+   * @param address the address to be validate
+   * @returns
+   */
+  const validateAddress = (address: string) => {
+    return address.length >= 3;
+  };
+
+  /**
+   * Helper function to validate the user phone (at least 3 characters)
+   * @param phone the phone to be validate
+   * @returns
+   */
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^[0-9]+$/;
+    return phoneRegex.test(phone) && phone.length >= 3;
+  };
+
+  /**
+   * Helper function to validate the user email (at least e characters)
+   * @param email the email to be validate
+   * @returns
+   */
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  /**
+   * Helper function to validate the user password (at least 4 characters)
+   * @param password the password to be validate
+   * @returns
+   */
+  const validatePassword = (password: string) => {
+    return password.length >= 4;
+  };
 
   /**
    * Handles the submission of the signup form
@@ -23,7 +81,37 @@ export default function SignupCard() {
     setError("");
     setSuccess("");
 
+    if (!validateIdCard(idCard)) {
+      setError(
+        "Id card must be at least 3 characters long and only have numbers",
+      );
+      return;
+    }
+    if (!validateName(name)) {
+      setError("Name must be at least 3 characters long");
+      return;
+    }
+    if (!validateAddress(address)) {
+      setError("Address must be at leat 3 characters long");
+      return;
+    }
+    if (!validatePhone(phone)) {
+      setError(
+        "Phone must be at least 3 characters long and only have numbers",
+      );
+      return;
+    }
+    if (!validateEmail(email)) {
+      setError("The email address must be valid");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setError("Password must be at least 4 characters long");
+      return;
+    }
+
     try {
+      setIsLoading(true);
       const { message, data, token } = await signup({
         idCard,
         name,
@@ -43,6 +131,8 @@ export default function SignupCard() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -158,7 +248,11 @@ export default function SignupCard() {
               type="submit"
               className="w-full text-slate-50 font-bold p-2 text-sm border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
             >
-              Sign Up
+              {isLoading ? (
+                <i className="fa fa-spinner fa-spin"></i> // Ícono de carga
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </div>
         </form>
