@@ -110,7 +110,15 @@ export default function LoginCard() {
               className="block text-slate-50 font-bold mb-2"
               htmlFor="username"
             >
-              <i className="fa-regular fa-envelope"></i> Email
+              {isAdmin ? (
+                <>
+                  <i className="fa-solid fa-user-tie"></i> Username
+                </>
+              ) : (
+                <>
+                  <i className="fa-regular fa-envelope"></i> Email
+                </>
+              )}
             </label>
             <input
               type="text"
