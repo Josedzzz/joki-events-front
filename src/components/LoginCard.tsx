@@ -124,7 +124,7 @@ export default function LoginCard() {
               type="text"
               id="username"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your email"
+              placeholder={isAdmin ? "Enter your username" : "Enter your email"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
