@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { signup } from "../services/signupService";
 import VerificationCard from "./VerificationCard";
+import Cookies from "js-cookie";
 
 export default function SignupCard() {
   const [idCard, setIdCard] = useState("");
@@ -23,7 +24,7 @@ export default function SignupCard() {
     setSuccess("");
 
     try {
-      const userId = await signup({
+      const { message, data, token } = await signup({
         idCard,
         name,
         address,
@@ -31,8 +32,11 @@ export default function SignupCard() {
         email,
         password,
       });
-      localStorage.setItem("userId", userId);
+      localStorage.setItem("userId", data);
       setIsRegistered(true);
+      setSuccess(message);
+      // Set a cookie that expires in 1 day for the authToken
+      Cookies.set("authToken", token, { expires: 1 });
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
