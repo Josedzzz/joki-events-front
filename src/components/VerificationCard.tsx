@@ -15,14 +15,8 @@ export default function VerificationCard() {
     setError("");
     setSuccess("");
 
-    let userId = localStorage.getItem("userId");
-    if (userId === null) {
-      userId = "";
-    }
-
     try {
       const message = await verifyCode({
-        id: userId,
         verificationCode: verificationCode,
       });
       setSuccess(message);

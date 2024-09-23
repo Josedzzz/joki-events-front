@@ -1,5 +1,4 @@
 interface VerifyCodeCredentials {
-  id: string;
   verificationCode: string;
 }
 
@@ -8,16 +7,28 @@ interface Response {
 }
 
 export const verifyCode = async (
-  credentials: VerifyCodeCredentials
+  credentials: VerifyCodeCredentials,
 ): Promise<string> => {
+  const clientId = localStorage.getItem("userId");
+
+  // Get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authToken="))
+    ?.split("=")[1];
+
   try {
-    const response = await fetch("http://localhost:3000/api/clients/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `http://localhost:8080/api/clients/${clientId}/verify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(credentials),
       },
-      body: JSON.stringify(credentials),
-    });
+    );
 
     if (!response.ok) {
       // Handle the error response
