@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { verifyCode } from "../services/verifyService";
+import { useNavigate } from "react-router-dom";
 
 export default function VerificationCard() {
+  const navigate = useNavigate();
   const [verificationCode, setVerificationCode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -20,6 +22,7 @@ export default function VerificationCard() {
         verificationCode: verificationCode,
       });
       setSuccess(message);
+      navigate("/user-dashboard");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
