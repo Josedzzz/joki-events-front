@@ -66,7 +66,7 @@ export default function LoginCard() {
         );
         localStorage.setItem("adminId", data);
         // Set a cookie that expires in 1 day for the authToken
-        Cookies.set("authToken", token, { expires: 1 });
+        Cookies.set("authAdminToken", token, { expires: 1 });
         setSuccess(message);
         navigate("/admin-dashboard");
       } else {
