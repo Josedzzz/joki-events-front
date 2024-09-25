@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updateAdmin } from "../services/updateAdminService";
+import Cookies from "js-cookie";
 
 export default function AdminAccount() {
   const [email, setEmail] = useState("");
@@ -18,6 +19,8 @@ export default function AdminAccount() {
 
     try {
       const message = await updateAdmin({ username, email });
+      // Set a cookie that expires in 1 day for the authToken
+      Cookies.set("authAdminToken", message.token, { expires: 1 });
       setSuccess(message.message);
     } catch (error) {
       if (error instanceof Error) {

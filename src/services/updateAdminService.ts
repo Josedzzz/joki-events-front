@@ -3,6 +3,13 @@ interface updateAdminCredentials {
   email: string;
 }
 
+interface ApiTokenResponse {
+  status: string;
+  message: string;
+  data: string;
+  token: string;
+}
+
 interface ApiResponse {
   status: string;
   message: string;
@@ -16,7 +23,7 @@ interface ApiResponse {
  */
 export const updateAdmin = async (
   credentials: updateAdminCredentials,
-): Promise<ApiResponse> => {
+): Promise<ApiTokenResponse> => {
   const adminId = localStorage.getItem("adminId");
 
   // get the cookie token
@@ -29,7 +36,7 @@ export const updateAdmin = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${adminId}/update`,
+      `http://localhost:8080/api/admin/${adminId}/update/`,
       {
         method: "POST",
         headers: {
@@ -47,10 +54,10 @@ export const updateAdmin = async (
     }
 
     // read the response as a json
-    const successResponse: ApiResponse = await response.json();
+    const successResponse: ApiTokenResponse = await response.json();
 
     // checks that the json contains the message for the update
-    if ("message" in successResponse) {
+    if ("token" in successResponse) {
       return successResponse;
     } else {
       throw new Error("Unexpected response format");
