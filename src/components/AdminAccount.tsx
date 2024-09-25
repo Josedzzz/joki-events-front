@@ -1,11 +1,40 @@
+import { useState } from "react";
+import { updateAdmin } from "../services/updateAdminService";
+
 export default function AdminAccount() {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  /**
+   * Handles the account updateAdmin form
+   * @param e the form submission event
+   */
+  const handleAccountUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    try {
+      const message = await updateAdmin({ username, email });
+      setSuccess(message.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center">
       <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-xl mx-auto flex flex-col">
         <h2 className="text-xl font-bold text-blue-400 mb-4">
           Account information
         </h2>
-        <form>
+        <form onSubmit={handleAccountUpdate}>
           <div className="mb-4">
             <label
               className="block text-slate-50 font-bold mb-2"
@@ -15,6 +44,7 @@ export default function AdminAccount() {
             </label>
             <input
               type="email"
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your new email"
@@ -29,6 +59,7 @@ export default function AdminAccount() {
             </label>
             <input
               type="text"
+              onChange={(e) => setUsername(e.target.value)}
               id="username"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter your new username"
@@ -43,6 +74,10 @@ export default function AdminAccount() {
             </button>
           </div>
         </form>
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+        {success && (
+          <p className="text-green-500 text-center mt-4">{success}</p>
+        )}
       </div>
     </div>
   );
