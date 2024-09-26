@@ -26,11 +26,66 @@ export default function AdminCouponInfo({
   const [success, setSuccess] = useState("");
 
   /**
+   * function to validate that the coupon name is at least 3 characters
+   * @param name the name to be validate
+   * @returns
+   */
+  const validateName = (name: string) => {
+    return name.length >= 3;
+  };
+
+  /**
+   * function to validate the discount (at least 3 characters)
+   * @param discount the discount to be validate
+   * @returns
+   */
+  const validateDiscountPercent = (discount: number) => {
+    return discount > 0 && discount <= 100;
+  };
+
+  /**
+   * function to validate the date (the date cannot have alredy passed)
+   * @param date the date to be validate
+   * @returns
+   */
+  const validateExpirationDate = (date: string) => {
+    const today = new Date().toISOString().split("T")[0];
+    return date > today;
+  };
+
+  /**
+   * function to validate the minPurchaseAmount (equal to or greater than 0)
+   * @param amount the amount to be validate
+   * @returns
+   */
+  const validateMinPurchaseAmount = (amount: number) => {
+    return amount >= 0;
+  };
+
+  /**
    * Handles the submission for the create coupon form
    */
   const handleCouponCreate = async () => {
     setError("");
     setSuccess("");
+
+    // validations before sending the form
+    if (!validateName(name)) {
+      setError("Coupon name must be at least 3 characters long");
+      return;
+    }
+    if (!validateDiscountPercent(discountPercent)) {
+      setError("Discount percentage must be between 1 and 100");
+      return;
+    }
+    if (!validateExpirationDate(expirationDate)) {
+      setError("Expiration date must be in the future");
+      return;
+    }
+    if (!validateMinPurchaseAmount(minPurchaseAmount)) {
+      setError("Minimum purchase amount must be equal to or greater than 0");
+      return;
+    }
 
     // format the date
     const formattedExpirationDate = `${expirationDate}T23:59:59`;
