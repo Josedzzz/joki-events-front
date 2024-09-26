@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Coupon } from "./AdminCoupons";
+import { createCoupon } from "../services/couponService";
 
 // Interface for the props of the component
 interface AdminCouponInfoProps {
@@ -10,6 +12,46 @@ export default function AdminCouponInfo({
   coupon,
   onBack,
 }: AdminCouponInfoProps) {
+  const [name, setName] = useState(coupon?.name || "");
+  const [discountPercent, setDiscountPercent] = useState(
+    coupon?.discountPercent || 0,
+  );
+  const [expirationDate, setExpirationDate] = useState(
+    coupon?.expirationDate || "",
+  );
+  const [minPurchaseAmount, setMinPurchaseAmount] = useState(
+    coupon?.minPurchaseAmount || 0,
+  );
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  /**
+   * Handles the submission for the create coupon form
+   */
+  const handleCouponCreate = async () => {
+    setError("");
+    setSuccess("");
+
+    // format the date
+    const formattedExpirationDate = `${expirationDate}T23:59:59`;
+
+    try {
+      const response = await createCoupon({
+        name,
+        discount: discountPercent,
+        expirationDate: formattedExpirationDate,
+        minPurchaseAmount,
+      });
+      setSuccess(response.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
   return (
     <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto">
       <button
@@ -31,9 +73,10 @@ export default function AdminCouponInfo({
             </label>
             <input
               type="text"
-              defaultValue={coupon?.name || ""}
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter coupon name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -42,10 +85,11 @@ export default function AdminCouponInfo({
               <i className="fa-solid fa-percent mr-1"></i> Discount Percentage
             </label>
             <input
-              type="text"
-              defaultValue={coupon?.discountPercent || 0}
+              type="number"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
               placeholder="Enter discount percentage"
+              value={discountPercent}
+              onChange={(e) => setDiscountPercent(Number(e.target.value))}
             />
           </div>
 
@@ -55,8 +99,9 @@ export default function AdminCouponInfo({
             </label>
             <input
               type="date"
-              defaultValue={coupon?.expirationDate || ""}
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={expirationDate}
+              onChange={(e) => setExpirationDate(e.target.value)}
             />
           </div>
 
@@ -67,22 +112,10 @@ export default function AdminCouponInfo({
             </label>
             <input
               type="text"
-              defaultValue={coupon?.minPurchaseAmount || 0}
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
               placeholder="Enter minimum purchase amount"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-custom-white mb-2">
-              <i className="fa-solid fa-arrow-down-9-1 mr-1"></i> Current Amount
-              Available
-            </label>
-            <input
-              type="text"
-              defaultValue={coupon?.currentAmountAvailable || 0}
-              className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
-              placeholder="Enter current amount available"
+              value={minPurchaseAmount}
+              onChange={(e) => setMinPurchaseAmount(Number(e.target.value))}
             />
           </div>
         </div>
@@ -108,12 +141,15 @@ export default function AdminCouponInfo({
             <button
               type="button"
               className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              onClick={handleCouponCreate}
             >
               <i className="fa-solid fa-plus mr-1"></i> Add Coupon
             </button>
           )}
         </div>
       </form>
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+      {success && <p className="text-green-500 text-center mt-4">{success}</p>}
     </div>
   );
 }
