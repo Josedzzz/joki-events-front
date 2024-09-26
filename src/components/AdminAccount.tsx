@@ -9,6 +9,25 @@ export default function AdminAccount() {
   const [success, setSuccess] = useState("");
 
   /**
+   * function to validate the email format
+   * @param email the email to validate
+   * @returns
+   */
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  /**
+   * function to validate the username (at least 3 characters)
+   * @param username the username to validate
+   * @returns
+   */
+  const validateUsername = (username: string) => {
+    return username.length >= 3;
+  };
+
+  /**
    * Handles the account updateAdmin form
    * @param e the form submission event
    */
@@ -16,6 +35,16 @@ export default function AdminAccount() {
     e.preventDefault();
     setError("");
     setSuccess("");
+
+    // validations before sending the form
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+    if (!validateUsername(username)) {
+      setError("Username must be at least 3 characters long");
+      return;
+    }
 
     try {
       const message = await updateAdmin({ username, email });
