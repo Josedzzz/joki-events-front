@@ -5,11 +5,77 @@ interface CreateCouponCredentials {
   minPurchaseAmount: number;
 }
 
+interface Coupon {
+  id: string;
+  name: string;
+  discountPercent: number;
+  expirationDate: string;
+  minPurchaseAmount: number;
+  used: boolean;
+}
+
+interface ApiResponseCoupons {
+  status: string;
+  message: string;
+  data: {
+    totalPages: number;
+    currentPage: number;
+    content: Coupon[];
+  };
+}
+
 interface ApiResponse {
   status: string;
   message: string;
   data: string;
 }
+
+/**
+ * Promise function that gets the response to get all the coupons
+ * @param page the page number to get the events
+ * @returns the api response coupons with all the information about the coupons
+ */
+export const getAllCoupons = async (
+  page: number = 0,
+): Promise<ApiResponseCoupons> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authAdminToken="))
+    ?.split("=")[1];
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/admin/get-paginated-coupons?page=${page}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponseCoupons = await response.json();
+
+    // checks that the json contains the data for the coupons
+    if (successResponse.data && successResponse.data.content) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the update:", error);
+    throw error;
+  }
+};
 
 /**
  * Promise function that gets the response for the create coupon
