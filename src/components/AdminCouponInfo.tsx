@@ -17,7 +17,7 @@ export default function AdminCouponInfo({
     coupon?.discountPercent || 0,
   );
   const [expirationDate, setExpirationDate] = useState(
-    coupon?.expirationDate || "",
+    coupon ? coupon.expirationDate.split("T")[0] : "",
   );
   const [minPurchaseAmount, setMinPurchaseAmount] = useState(
     coupon?.minPurchaseAmount || 0,
