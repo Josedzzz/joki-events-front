@@ -20,7 +20,7 @@ export default function AdminCouponCard({
           {coupon.name}
         </h3>
         <p className="text-custom-white">
-          {"Discount: " + coupon.discountPercent * 100 + "%"}
+          {"Discount: " + coupon.discountPercent + "%"}
         </p>
         <p className="text-custom-white">
           {new Date(coupon.expirationDate).toLocaleDateString()}
