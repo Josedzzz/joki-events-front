@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Coupon } from "./AdminCoupons";
-import { createCoupon } from "../services/couponService";
+import { createCoupon, updateCoupon } from "../services/couponService";
 
 // Interface for the props of the component
 interface AdminCouponInfoProps {
@@ -107,6 +107,55 @@ export default function AdminCouponInfo({
     }
   };
 
+  /*
+   * Handles the submission for the update coupon form
+   */
+  const handleCouponUpdate = async () => {
+    setError("");
+    setSuccess("");
+
+    // validations before sending the form
+    if (!validateName(name)) {
+      setError("Coupon name must be at least 3 characters long");
+      return;
+    }
+    if (!validateDiscountPercent(discountPercent)) {
+      setError("Discount percentage must be between 1 and 100");
+      return;
+    }
+    if (!validateExpirationDate(expirationDate)) {
+      setError("Expiration date must be in the future");
+      return;
+    }
+    if (!validateMinPurchaseAmount(minPurchaseAmount)) {
+      setError("Minimum purchase amount must be equal to or greater than 0");
+      return;
+    }
+
+    // format the date
+    const formattedExpirationDate = `${expirationDate}T23:59:59`;
+
+    try {
+      if (!coupon?.id) {
+        setError("The coupon does not contain an id");
+        return;
+      }
+      const response = await updateCoupon({
+        id: coupon?.id,
+        discount: discountPercent,
+        expirationDate: formattedExpirationDate,
+        minPurchaseAmount,
+      });
+      setSuccess(response.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
   return (
     <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto">
       <button
@@ -182,6 +231,7 @@ export default function AdminCouponInfo({
               <button
                 type="button"
                 className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+                onClick={handleCouponUpdate}
               >
                 <i className="fa-solid fa-share mr-1"></i> Update
               </button>

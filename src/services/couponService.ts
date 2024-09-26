@@ -5,6 +5,13 @@ interface CreateCouponCredentials {
   minPurchaseAmount: number;
 }
 
+interface UpdateCouponCredentials {
+  id: string;
+  discount: number;
+  expirationDate: string;
+  minPurchaseAmount: number;
+}
+
 interface Coupon {
   id: string;
   name: string;
@@ -114,6 +121,49 @@ export const createCoupon = async (
     const successResponse: ApiResponse = await response.json();
 
     // checks that the json contains the message for the create coupon
+    if ("message" in successResponse) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the update:", error);
+    throw error;
+  }
+};
+
+export const updateCoupon = async (
+  credentials: UpdateCouponCredentials,
+): Promise<ApiResponse> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authAdminToken="))
+    ?.split("=")[1];
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/admin/update-coupon/${credentials.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(credentials),
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponse = await response.json();
+
+    // checks that the json contains the message for the update coupon
     if ("message" in successResponse) {
       return successResponse;
     } else {
