@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminCouponCard from "./AdminCouponCard";
 import AdminCouponInfo from "./AdminCouponInfo";
+import { getAllCoupons } from "../services/couponService";
 
 // Interface for the coupons
 export interface Coupon {
@@ -9,50 +10,19 @@ export interface Coupon {
   discountPercent: number;
   expirationDate: string;
   minPurchaseAmount: number;
-  currentAmountAvailable: number;
+  used: boolean;
 }
 
 export default function AdminCoupons() {
-  const couponData: Coupon[] = [
-    {
-      id: "1",
-      name: "Hallowen",
-      discountPercent: 0.15,
-      expirationDate: "2024-10-05T18:00",
-      minPurchaseAmount: 100000,
-      currentAmountAvailable: 20,
-    },
-    {
-      id: "2",
-      name: "December",
-      discountPercent: 0.25,
-      expirationDate: "2024-10-05T18:00",
-      minPurchaseAmount: 90000,
-      currentAmountAvailable: 25,
-    },
-    {
-      id: "3",
-      name: "New Year",
-      discountPercent: 0.05,
-      expirationDate: "2024-10-05T18:00",
-      minPurchaseAmount: 50000,
-      currentAmountAvailable: 105,
-    },
-    {
-      id: "4",
-      name: "Valentine",
-      discountPercent: 0.5,
-      expirationDate: "2024-10-05T18:00",
-      minPurchaseAmount: 200000,
-      currentAmountAvailable: 50,
-    },
-  ];
-
+  const [couponsToDisplay, setCouponsToDisplay] = useState<Coupon[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
-  const [isAddingNewCoupon, setIsAddingNewCoupon] = useState<boolean>(false);
+  const [isAddingNewCoupon, setIsAddingNewCoupon] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
 
   /**
-   * handling useStates for when the admin is going to add a new coupon
+   * manage the states to add a coupon
    */
   const handleAddCoupon = () => {
     setSelectedCoupon(null);
@@ -60,13 +30,53 @@ export default function AdminCoupons() {
   };
 
   /**
-   * handling useStates for when the admin selects a coupon
-   * @param coupon the coupon interface contaning the data of the selected coupon
+   * manage the states to select coupon
+   * @param coupon the selected coupon
    */
   const handleSelectCoupon = (coupon: Coupon) => {
     setSelectedCoupon(coupon);
     setIsAddingNewCoupon(false);
   };
+
+  /**
+   * get all the coupons paginated
+   */
+  const handleGetCoupons = async (page: number = 0) => {
+    setLoading(true);
+    try {
+      const response = await getAllCoupons(page);
+      setCouponsToDisplay(response.data.content);
+      setTotalPages(response.data.totalPages);
+      setCurrentPage(response.data.currentPage);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /**
+   * handle next page
+   */
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      handleGetCoupons(currentPage + 1);
+    }
+  };
+
+  /**
+   * handle previous page
+   */
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      handleGetCoupons(currentPage - 1);
+    }
+  };
+
+  // fetch books when page changes
+  useEffect(() => {
+    handleGetCoupons();
+  }, []);
 
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6">
@@ -82,15 +92,31 @@ export default function AdminCoupons() {
             </button>
           </div>
           <div className="mb-4 flex justify-between">
-            <button className="w-50px text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105">
+            <button
+              onClick={handlePreviousPage}
+              disabled={loading || currentPage === 0}
+              className={`w-50px text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl transition duration-300 ease-in-out transform hover:scale-105 ${
+                currentPage === 0
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-blue-400"
+              }`}
+            >
               <i className="fa-solid fa-arrow-left"></i>
             </button>
-            <button className="w-50px text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105">
+            <button
+              onClick={handleNextPage}
+              disabled={loading || currentPage >= totalPages - 1}
+              className={`w-50px text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl transition duration-300 ease-in-out transform hover:scale-105 ${
+                currentPage >= totalPages - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-blue-400"
+              }`}
+            >
               <i className="fa-solid fa-arrow-right"></i>
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {couponData.map((coupon) => (
+            {couponsToDisplay.map((coupon) => (
               <AdminCouponCard
                 key={coupon.id}
                 coupon={coupon}
@@ -98,6 +124,7 @@ export default function AdminCoupons() {
               />
             ))}
           </div>
+          {loading && <p>Loading...</p>}
         </div>
       ) : (
         <AdminCouponInfo
