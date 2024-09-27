@@ -129,9 +129,10 @@ export default function AdminCoupons() {
       ) : (
         <AdminCouponInfo
           coupon={selectedCoupon}
-          onBack={() => {
+          onBack={async () => {
             setSelectedCoupon(null);
             setIsAddingNewCoupon(false);
+            await handleGetCoupons(currentPage);
           }}
         />
       )}
