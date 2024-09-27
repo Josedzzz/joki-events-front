@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Coupon } from "./AdminCoupons";
-import { createCoupon, updateCoupon } from "../services/couponService";
+import {
+  createCoupon,
+  deleteCoupon,
+  updateCoupon,
+} from "../services/couponService";
 
 // Interface for the props of the component
 interface AdminCouponInfoProps {
@@ -156,6 +160,29 @@ export default function AdminCouponInfo({
     }
   };
 
+  /*
+   * handles the submission for the delete coupon form
+   */
+  const handleCouponDelete = async () => {
+    setError("");
+    setSuccess("");
+
+    try {
+      if (!coupon?.id) {
+        setError("The coupon does not contain an id");
+        return;
+      }
+      const response = await deleteCoupon(coupon.id);
+      setSuccess(response.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
   return (
     <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto">
       <button
@@ -238,6 +265,7 @@ export default function AdminCouponInfo({
               <button
                 type="button"
                 className="text-red-500 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
+                onClick={handleCouponDelete}
               >
                 <i className="fa-solid fa-trash mr-1"></i> Delete
               </button>
