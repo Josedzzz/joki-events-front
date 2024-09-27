@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { updateAdmin } from "../services/updateAdminService";
+import { useEffect, useState } from "react";
+import {
+  getAdminAccountInfo,
+  updateAdmin,
+} from "../services/updateAdminService";
 import Cookies from "js-cookie";
 
 export default function AdminAccount() {
@@ -25,6 +28,20 @@ export default function AdminAccount() {
    */
   const validateUsername = (username: string) => {
     return username.length >= 3;
+  };
+
+  /**
+   * Fetch the admin account info on component mount
+   */
+  const fetchAdminInfo = async () => {
+    try {
+      const response = await getAdminAccountInfo();
+      setEmail(response.data.email);
+      setUsername(response.data.username);
+    } catch (error) {
+      console.error("Error fetching admin info:", error);
+      setError("Failed to load admin info");
+    }
   };
 
   /**
@@ -60,6 +77,11 @@ export default function AdminAccount() {
     }
   };
 
+  // Fetch admin info when the component mounts
+  useEffect(() => {
+    fetchAdminInfo();
+  }, []);
+
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center">
       <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-xl mx-auto flex flex-col">
@@ -76,6 +98,7 @@ export default function AdminAccount() {
             </label>
             <input
               type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               id="email"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -91,6 +114,7 @@ export default function AdminAccount() {
             </label>
             <input
               type="text"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
               id="username"
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
