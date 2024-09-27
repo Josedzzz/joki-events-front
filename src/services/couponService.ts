@@ -132,6 +132,11 @@ export const createCoupon = async (
   }
 };
 
+/**
+ * Promise function that gets the response for the update coupon
+ * @param credentials interface that contains the credentials of the coupon to be updated
+ * @returns the api response interface with the information about it
+ */
 export const updateCoupon = async (
   credentials: UpdateCouponCredentials,
 ): Promise<ApiResponse> => {
@@ -151,6 +156,51 @@ export const updateCoupon = async (
           Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(credentials),
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponse = await response.json();
+
+    // checks that the json contains the message for the update coupon
+    if ("message" in successResponse) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the update:", error);
+    throw error;
+  }
+};
+
+/**
+ * Promise function that gets the response for the delede coupon
+ * @param couponId the id of the coupon to be delede
+ * @returns the api response interface with the information about it
+ */
+export const deleteCoupon = async (couponId: string): Promise<ApiResponse> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authAdminToken="))
+    ?.split("=")[1];
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/admin/delete-coupon/${couponId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
       },
     );
 
