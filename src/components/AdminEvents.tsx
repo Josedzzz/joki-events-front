@@ -11,6 +11,7 @@ export interface Event {
   localities: Locality[];
   totalAvailablePlaces: number;
   eventImageUrl: string;
+  localitiesImageUrl: string;
   eventType: string;
 }
 

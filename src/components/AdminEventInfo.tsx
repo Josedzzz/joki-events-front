@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Event } from "./AdminEvents";
+import { Event, Locality } from "./AdminEvents";
 
 // Interface for the props of the component
 interface AdminEventInfoProps {
@@ -8,25 +8,60 @@ interface AdminEventInfoProps {
 }
 
 export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
-  // State for managing event image URL and localities
-  const [imageUrl, setImageUrl] = useState(event?.imageUrl || "");
-  const [localities, setLocalities] = useState(
-    event?.idDistributionLocality || [],
-  );
+  const [imageUrl, setImageUrl] = useState(event?.eventImageUrl || "");
   const [localityImageUrl, setLocalityImageUrl] = useState(
-    event?.localityImageUrl || "",
+    event?.localitiesImageUrl || "",
   );
+  const [localities, setLocalities] = useState<Locality[]>(
+    event?.localities || [],
+  );
+  const [eventType, setEventType] = useState(event?.eventType || "Concert");
 
-  // Function to handle adding a new locality
-  // TO DO: Implement an interface for the localities
+  /**
+   * handle event image file selection
+   * @param e
+   */
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  /**
+   * handle locality image file selection
+   * @param e
+   */
+  const handleLocalityImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setLocalityImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  /**
+   * function to handle adding a new locality
+   */
   const addLocality = () => {
     setLocalities([
       ...localities,
-      { name: "", price: 0, maxCapacity: 0, currentCapacity: 0 },
+      { name: "", price: 0, maxCapacity: 0, currentOccupancy: 0 },
     ]);
   };
 
-  // Function to handle deleting a locality
+  /*
+   * function to handle deletting a locality
+   */
   const deleteLocality = (index: number) => {
     setLocalities(localities.filter((_, i) => i !== index));
   };
@@ -100,11 +135,26 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
               Quantity
             </label>
             <input
-              defaultValue={event?.totalAvailableQuantity || 0}
+              defaultValue={event?.totalAvailablePlaces || 0}
               className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               placeholder="Enter available tickets"
               readOnly
             />
+          </div>
+
+          <div className="mb-2">
+            <label className="block text-custom-white mb-2">
+              <i className="fa-solid fa-music mr-1"></i>Event Type
+            </label>
+            <select
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value)}
+              className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="concierto">Concert</option>
+              <option value="teatro">Theater</option>
+              <option value="tecnologico">tech</option>
+            </select>
           </div>
         </div>
 
@@ -118,13 +168,12 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
             alt="Event"
             className="w-full h-max object-cover rounded-lg mb-4"
           />
-          <label className="block text-custom-white mb-2">Image URL</label>
+          <label className="block text-custom-white mb-2">Select Image</label>
           <input
-            type="url"
+            type="file"
+            accept="image/*"
             className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            onChange={handleImageChange}
           />
         </div>
 
@@ -140,9 +189,9 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
           >
             <i className="fa-solid fa-plus mr-1"></i> Add Locality
           </button>
-          <table className="table-auto w-full text-left bg-custom-gray text-white rounded-lg overflow-hidden">
+          <table className="table-auto w-full text-left bg-custom-dark border-2 border-blue-400 rounded-xl text-white overflow-hidden">
             <thead>
-              <tr className="bg-blue-400 text-custom-black">
+              <tr className="bg-custom-dark text-white">
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Price</th>
                 <th className="px-4 py-2">Max Capacity</th>
@@ -180,7 +229,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
                   <td className="px-4 py-2">
                     <input
                       type="text"
-                      defaultValue={loc.currentCapacity || 0}
+                      defaultValue={loc.currentOccupancy || 0}
                       className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
                       placeholder="Enter current capacity"
                     />
@@ -188,10 +237,10 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
                   <td className="px-4 py-2">
                     <button
                       type="button"
-                      className="text-red-500"
                       onClick={() => deleteLocality(index)}
+                      className="bg-blue-400 w-full text-slate-50 font-bold p-2 border-2 border-transparent rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
                     >
-                      Delete
+                      <i className="fa-solid fa-trash"></i>
                     </button>
                   </td>
                 </tr>
@@ -200,7 +249,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
           </table>
         </div>
 
-        {/* Locality Image URL input */}
+        {/* Locality Image input */}
         <div className="mb-4">
           <label className="block text-custom-white font-bold mb-2">
             Locality Image
@@ -210,36 +259,13 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
             alt="Locality"
             className="w-full h-max object-cover rounded-lg mb-4"
           />
-          <label className="block text-custom-white mb-2">
-            Locality image URL
-          </label>
+          <label className="block text-custom-white mb-2">Select Image</label>
           <input
-            type="url"
+            type="file"
+            accept="image/*"
             className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="Enter image URL"
-            value={localityImageUrl}
-            onChange={(e) => setLocalityImageUrl(e.target.value)}
+            onChange={handleLocalityImageChange}
           />
-        </div>
-
-        {/* Buttons */}
-        <div className="flex justify-between mt-6">
-          <button
-            type="button"
-            className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            <i className="fa-solid fa-share mr-1"></i>{" "}
-            {event ? "Save Changes" : "Create"}
-          </button>
-
-          {event && (
-            <button
-              type="button"
-              className="text-red-500 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
-            >
-              <i className="fa-solid fa-trash mr-1"></i> Delete
-            </button>
-          )}
         </div>
       </form>
     </div>
