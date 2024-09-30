@@ -17,7 +17,7 @@ export default function AdminEventCard({
     >
       <img
         className="w-full h-32 sm:h-48 object-cover"
-        src={event.imageUrl}
+        src={event.eventImageUrl}
         alt={event.name}
       />
       <div className="p-4">
