@@ -25,7 +25,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const [localities, setLocalities] = useState<Locality[]>(
     event?.localities || [],
   );
-  const [eventType, setEventType] = useState(event?.eventType || "Concert");
+  const [eventType, setEventType] = useState(event?.eventType || "CONCERT");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -101,15 +101,80 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   }, [localities]);
 
   /**
+   * Validates the event data before submission
+   * @returns {string | null} - Returns an error message if there's a validation issue, or null if validation passes
+   */
+  const validateEventData = (): string | null => {
+    // Validate images
+    if (!eventImageUrl || !localitiesImageUrl) {
+      return "Please provide the required images";
+    }
+
+    // Validate name
+    if (!name || name.trim().length === 0) {
+      return "Event name is required";
+    }
+
+    // Validate city
+    if (!city || city.trim().length === 0) {
+      return "City is required";
+    }
+
+    // Validate address
+    if (!address || address.trim().length === 0) {
+      return "Address is required";
+    }
+
+    // Validate date
+    const formattedDate = date.split(":").slice(0, 2).join(":") + ":00";
+    const eventDate = new Date(formattedDate);
+    const currentDate = new Date();
+    if (isNaN(eventDate.getTime()) || eventDate <= currentDate) {
+      return "Please provide a valid future event date";
+    }
+
+    // Validate totalAvailablePlaces
+    if (!totalAvailablePlaces || totalAvailablePlaces <= 0) {
+      return "Total available places must be greater than 0";
+    }
+
+    // Validate localities
+    if (!localities || localities.length === 0) {
+      return "At least one locality is required";
+    }
+
+    for (const locality of localities) {
+      if (!locality.name || locality.name.trim().length === 0) {
+        return "Each locality must have a name";
+      }
+      if (locality.price <= 0) {
+        return "Each locality must have a price greater than 0";
+      }
+      if (locality.maxCapacity <= 0) {
+        return "Each locality must have a max capacity greater than 0";
+      }
+    }
+
+    // Validate eventType
+    if (!eventType || eventType.trim().length === 0) {
+      return "Event type is required";
+    }
+
+    // If all validations pass, return null
+    return null;
+  };
+
+  /**
    * handles the submission for the create event form
    */
   const handleEventCreate = async () => {
     setError("");
     setSuccess("");
 
-    // validations before sending the form
-    if (!eventImageUrl || !localitiesImageUrl) {
-      setError("Please provide the required images");
+    // Perform validation
+    const errorMessage = validateEventData();
+    if (errorMessage) {
+      setError(errorMessage);
       return;
     }
 
