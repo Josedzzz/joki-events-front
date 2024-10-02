@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Event, Locality } from "./AdminEvents";
-import { createEvent } from "../services/eventService";
+import {
+  createEvent,
+  deleteEvent,
+  updateEvent,
+} from "../services/eventService";
 
 // Interface for the props of the component
 interface AdminEventInfoProps {
@@ -199,6 +203,81 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
         localitiesImageUrl,
         eventType,
       });
+      setSuccess(response.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
+  /**
+   * Handles the submission for the update event form
+   * @returns
+   */
+  const handleEventUpdate = async () => {
+    setError("");
+    setSuccess("");
+
+    // Perform validation
+    const errorMessage = validateEventData();
+    if (errorMessage) {
+      setError(errorMessage);
+      return;
+    }
+
+    const modifiedLocalities = localities.map(
+      ({ currentOccupancy, ...rest }) => {
+        console.log("Current Occupancy:", currentOccupancy);
+        return rest;
+      },
+    );
+
+    const formattedDate = date.split(":").slice(0, 2).join(":") + ":00";
+
+    try {
+      if (!event?.id) {
+        setError("The event does not contain an id");
+        return;
+      }
+      const response = await updateEvent({
+        id: event.id,
+        name,
+        city,
+        address,
+        date: formattedDate,
+        totalAvailablePlaces,
+        localities: modifiedLocalities,
+        eventImageUrl,
+        localitiesImageUrl,
+        eventType,
+      });
+      setSuccess(response.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
+  /**
+   * handles the submission for the delete event
+   * @returns
+   */
+  const handleEventDelete = async () => {
+    setError("");
+    setSuccess("");
+
+    try {
+      if (!event?.id) {
+        setError("The event does not contain an id");
+        return;
+      }
+      const response = await deleteEvent(event.id);
       setSuccess(response.message);
     } catch (error) {
       if (error instanceof Error) {
@@ -442,12 +521,14 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
               <button
                 type="button"
                 className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+                onClick={handleEventUpdate}
               >
                 <i className="fa-solid fa-share mr-1"></i> Update
               </button>
               <button
                 type="button"
                 className="text-red-500 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
+                onClick={handleEventDelete}
               >
                 <i className="fa-solid fa-trash mr-1"></i> Delete
               </button>
