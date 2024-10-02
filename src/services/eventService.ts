@@ -10,6 +10,19 @@ interface CreateEventCredentials {
   eventType: string;
 }
 
+interface UpdateEventCredentials {
+  id: string;
+  name: string;
+  city: string;
+  address: string;
+  date: string;
+  totalAvailablePlaces: number;
+  localities: Locality[];
+  eventImageUrl: string;
+  localitiesImageUrl: string;
+  eventType: string;
+}
+
 interface Locality {
   name: string;
   price: number;
@@ -136,6 +149,99 @@ export const createEvent = async (
 
     // checks that the json contains the data
     if (successResponse.data) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the update:", error);
+    throw error;
+  }
+};
+
+/**
+ * Promise function that gets the response for the update event
+ * @param credentials contains the credentials of the event to be updated
+ * @returns the api response with the information about it
+ */
+export const updateEvent = async (
+  credentials: UpdateEventCredentials,
+): Promise<ApiResponse> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authAdminToken="))
+    ?.split("=")[1];
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/admin/update-event/${credentials.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(credentials),
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponse = await response.json();
+
+    // checks that the json contains the message for the update coupon
+    if ("message" in successResponse) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the update:", error);
+    throw error;
+  }
+};
+
+/**
+ * Promise function that gets the response for the delete event
+ * @param eventId the id of the coupon to be deleted
+ * @returns the api response interface with the information about it
+ */
+export const deleteEvent = async (eventId: string): Promise<ApiResponse> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authAdminToken="))
+    ?.split("=")[1];
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/admin/delete-event/${eventId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponse = await response.json();
+
+    // checks that the json contains the message for the update coupon
+    if ("message" in successResponse) {
       return successResponse;
     } else {
       throw new Error("Unexpected response format");
