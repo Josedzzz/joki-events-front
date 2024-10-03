@@ -279,6 +279,8 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
       }
       const response = await deleteEvent(event.id);
       setSuccess(response.message);
+      // Reload the page after successful deletion
+      window.location.reload();
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
