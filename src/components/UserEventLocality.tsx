@@ -5,10 +5,12 @@ interface UserEventLocalityProps {
   locality: Locality;
 }
 
-export default function UserEventLocality({ locality }: UserEventLocalityProps) {
+export default function UserEventLocality({
+  locality,
+}: UserEventLocalityProps) {
   return (
     <div
-      key={locality.id}
+      key={locality.name}
       className="bg-custom-gray p-2 rounded-lg shadow-md transition-transform hover:border-2 hover:border-blue-400 transform hover:scale-105"
     >
       <h4 className="text-lg text-slate-50 font-semibold text-center mb-1">
@@ -18,7 +20,7 @@ export default function UserEventLocality({ locality }: UserEventLocalityProps) 
         Price: ${locality.price}
       </p>
       <p className="text-slate-200 text-center mb-2">
-        Capacity: {locality.currentCapacity} / {locality.maxCapacity}
+        Capacity: {locality.currentOccupancy} / {locality.maxCapacity}
       </p>
 
       {/* Quantity Selection */}

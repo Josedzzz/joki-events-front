@@ -17,7 +17,7 @@ export default function UserEventCatd({
     >
       <img
         className="w-full h-32 sm:h-48 object-cover"
-        src={userEvent.imageUrl}
+        src={userEvent.eventImageUrl}
         alt={userEvent.name}
       />
       <div className="p-4">
