@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 // Define the type for the props
 type UserHeaderProps = {
   toggleContent: (contentName: string) => void;
@@ -8,6 +10,8 @@ export default function UserHeader({
   toggleContent,
   content,
 }: UserHeaderProps) {
+  const navigate = useNavigate();
+
   /**
    * Depends on the link and name of the content give some tailwindcss classes
    * @param link the content
@@ -21,7 +25,7 @@ export default function UserHeader({
     }`;
 
   return (
-    <header className="mt-3 h-12 w-full flex justify-between items-center max-w-3xl mx-auto p-2 appearr">
+    <header className="mt-3 h-12 w-full flex justify-between items-center max-w-5xl mx-auto p-2 appearr">
       <div className="flex items-center space-x-1 gap-3">
         <h1 className="text-xl sm:text-3xl md:text-4xl text-slate-50 font-bold">
           JokiEvents Menu
@@ -52,6 +56,12 @@ export default function UserHeader({
           className={linkClasses("account")}
         >
           Account
+        </a>
+        <a
+          onClick={() => navigate("/login")}
+          className={linkClasses("log-out")}
+        >
+          Log out
         </a>
       </nav>
     </header>
