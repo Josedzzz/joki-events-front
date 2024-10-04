@@ -16,7 +16,7 @@ export default function UserEventInfo({
       {/* Button to go back */}
       <button
         onClick={onBack}
-        className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out mb-6"
+        className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out mb-6 transform hover:scale-105"
       >
         <i className="fa-solid fa-arrow-left mr-1"></i> Back
       </button>
@@ -26,7 +26,7 @@ export default function UserEventInfo({
         {/* Event Image */}
         <div>
           <img
-            src={userEvent.imageUrl}
+            src={userEvent.eventImageUrl}
             alt={userEvent.name}
             className="w-full h-96 object-cover rounded-lg shadow-lg"
           />
@@ -79,7 +79,7 @@ export default function UserEventInfo({
                   Available Tickets
                 </label>
                 <p className="text-slate-200 text-base">
-                  {userEvent.totalAvailableQuantity}
+                  {userEvent.totalAvailablePlaces}
                 </p>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function UserEventInfo({
         <h3 className="text-xl font-bold text-slate-50">Localities</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
           {userEvent.localities.map((locality: Locality) => (
-            <UserEventLocality key={locality.id} locality={locality} />
+            <UserEventLocality key={locality.name} locality={locality} />
           ))}
         </div>
 
@@ -102,7 +102,7 @@ export default function UserEventInfo({
             Localities Image
           </label>
           <img
-            src={userEvent.localityImageUrl}
+            src={userEvent.localitiesImageUrl}
             alt="Localities"
             className="w-full h-64 object-cover rounded-lg shadow-lg"
           />
@@ -110,9 +110,9 @@ export default function UserEventInfo({
 
         <button
           onClick={onBack}
-          className="mt-4 text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out"
+          className="mt-4 text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
         >
-          <i className="fa-solid fa-arrow-left mr-1"></i> Add to cart
+          <i className="fa-solid fa-cart-shopping mr-1"></i> Add to cart
         </button>
       </div>
     </div>
