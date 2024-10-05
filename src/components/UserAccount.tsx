@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getClientAccountInfo } from "../services/updateClientService";
+import {
+  getClientAccountInfo,
+  updateClient,
+} from "../services/updateClientService";
+import Cookies from "js-cookie";
 
 export default function UserAccount() {
   const [idCard, setIdCard] = useState("");
@@ -9,6 +13,54 @@ export default function UserAccount() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  /**
+   * function to validate if a string contains only numbers
+   * @param idCard the ID card string to validate
+   * @returns true if the string contains only numbers, false otherwise
+   */
+  const validateIdCard = (idCard: string) => {
+    const idCardRegex = /^[0-9]+$/;
+    return idCardRegex.test(idCard);
+  };
+
+  /**
+   * function to validate if a string contains only numbers
+   * @param phone the phone string to validate
+   * @returns true if the string contains only numbers, false otherwise
+   */
+  const validatePhone = (phone: string) => {
+    const phoneRegex = /^[0-9]+$/;
+    return phoneRegex.test(phone);
+  };
+
+  /**
+   * function to validate the email format
+   * @param email the email to validate
+   * @returns
+   */
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  /**
+   * function to validate the username (at least 3 characters)
+   * @param username the username to validate
+   * @returns
+   */
+  const validateUsername = (username: string) => {
+    return username.length >= 3;
+  };
+
+  /**
+   * function to validate the address (at least 3 characters)
+   * @param address the address to validate
+   * @returns
+   */
+  const validateAddress = (address: string) => {
+    return address.length >= 3;
+  };
 
   /**
    * fetch the client account information
@@ -27,11 +79,60 @@ export default function UserAccount() {
     }
   };
 
+  /**
+   * handles the account update form
+   * @returns
+   */
+  const handleAccountUpdate = async () => {
+    setError("");
+    setSuccess("");
+
+    // validations before sending the form
+    if (!validateIdCard(idCard)) {
+      setError("Please enter a valid id card format");
+      return;
+    }
+    if (!validatePhone(phone)) {
+      setError("Please enter a valid phone format");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email format");
+      return;
+    }
+    if (!validateUsername(username)) {
+      setError("Username must be at least 3 characters long");
+      return;
+    }
+    if (!validateAddress(address)) {
+      setError("Address must be at least 3 characters long");
+      return;
+    }
+
+    try {
+      const message = await updateClient({
+        idCard,
+        phone,
+        email,
+        name: username,
+        address,
+      });
+      // Set a cookie that expires in 1 day for the authToken
+      Cookies.set("authToken", message.token, { expires: 1 });
+      setSuccess(message.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
   // fetch the client info when the component mounts
   useEffect(() => {
     fetchClientInfo();
   }, []);
-
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center">
       <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-xl mx-auto flex flex-col">
@@ -134,6 +235,7 @@ export default function UserAccount() {
             <button
               type="submit"
               className="w-full text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              onClick={handleAccountUpdate}
             >
               Update account information
             </button>
