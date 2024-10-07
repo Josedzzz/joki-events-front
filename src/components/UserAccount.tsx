@@ -4,7 +4,7 @@ import {
   getClientAccountInfo,
   updateClient,
 } from "../services/updateClientService";
-import Cookies from "js-cookie";
+//import Cookies from "js-cookie";
 
 export default function UserAccount() {
   const [idCard, setIdCard] = useState("");
@@ -119,7 +119,8 @@ export default function UserAccount() {
         address,
       });
       // Set a cookie that expires in 1 day for the authToken
-      Cookies.set("authToken", message.token, { expires: 1 });
+      // Cookies.set("authToken", message.token, { expires: 1 });
+      // console.log(message.token);
       setSuccess(message.message);
     } catch (error) {
       if (error instanceof Error) {
@@ -139,13 +140,7 @@ export default function UserAccount() {
     setSuccess("");
 
     try {
-      // gets the id of the client
-      const clientId = localStorage.getItem("userId");
-      if (!clientId) {
-        setError("The client does not contain an id");
-        return;
-      }
-      const response = await deleteClientAccount(clientId);
+      const response = await deleteClientAccount();
       setSuccess(response.message);
     } catch (error) {
       if (error instanceof Error) {
@@ -167,7 +162,7 @@ export default function UserAccount() {
         <h2 className="text-xl font-bold text-blue-400 mb-4">
           Account Information
         </h2>
-        <form>
+        <form onSubmit={(e) => e.preventDefault()}>
           <div className="mb-4">
             <label
               className="block text-slate-50 font-bold mb-2"
