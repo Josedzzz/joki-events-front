@@ -43,7 +43,7 @@ export const updateClient = async (
 ): Promise<ApiTokenResponse> => {
   const userId = localStorage.getItem("userId");
 
-  // gets the cookie token
+  // Get the cookie token
   const authToken = document.cookie
     .split("; ")
     .find((row) => row.startsWith("authToken="))
@@ -51,7 +51,7 @@ export const updateClient = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/${userId}/update/`,
+      `http://localhost:8080/api/clients/${userId}/update`,
       {
         method: "POST",
         headers: {
@@ -135,9 +135,9 @@ export const getClientAccountInfo = async (): Promise<ClientInfoResponse> => {
  * @param clientId the id of the client to be delete
  * @returns the api response interface with the information about it
  */
-export const deleteClientAccount = async (
-  clientId: string,
-): Promise<ApiResponse> => {
+export const deleteClientAccount = async (): Promise<ApiResponse> => {
+  const userId = localStorage.getItem("userId");
+
   // gets the cookie token
   const authToken = document.cookie
     .split("; ")
@@ -146,7 +146,7 @@ export const deleteClientAccount = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/${clientId}/delete`,
+      `http://localhost:8080/api/clients/${userId}/delete`,
       {
         method: "POST",
         headers: {
