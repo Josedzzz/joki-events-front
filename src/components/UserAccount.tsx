@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  deleteClientAccount,
   getClientAccountInfo,
   updateClient,
 } from "../services/updateClientService";
@@ -129,10 +130,37 @@ export default function UserAccount() {
     }
   };
 
+  /**
+   * handles the submission for the delete account
+   * @returns
+   */
+  const handleDeleteAccount = async () => {
+    setError("");
+    setSuccess("");
+
+    try {
+      // gets the id of the client
+      const clientId = localStorage.getItem("userId");
+      if (!clientId) {
+        setError("The client does not contain an id");
+        return;
+      }
+      const response = await deleteClientAccount(clientId);
+      setSuccess(response.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
   // fetch the client info when the component mounts
   useEffect(() => {
     fetchClientInfo();
   }, []);
+
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center">
       <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-xl mx-auto flex flex-col">
@@ -229,6 +257,7 @@ export default function UserAccount() {
             <button
               type="submit"
               className="w-full text-slate-50 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
+              onClick={handleDeleteAccount}
             >
               Delete account
             </button>
