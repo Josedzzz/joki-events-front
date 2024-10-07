@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import UserEventCard from "./UserEventCard";
 import UserEventInfo from "./UserEventInfo";
 import { getAllClientEvents } from "../services/clientEventService";
+import SearchEvent from "./SearchEvent";
 
 // Interface for the event localities
 export interface Locality {
@@ -101,14 +102,7 @@ export default function UserEvents() {
 
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6">
-      <div className="relative mb-6 flex flex-row gap-5">
-        <input
-          type="text"
-          placeholder="Search events..."
-          className="bg-custom-gray text-slate-50 px-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <i className="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-50"></i>
-      </div>
+      <SearchEvent />
 
       <div className="mb-4 flex justify-between">
         <button
