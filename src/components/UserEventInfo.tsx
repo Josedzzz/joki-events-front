@@ -42,9 +42,11 @@ export default function UserEventInfo({
               {/* Event Name */}
               <div className="mb-1">
                 <label className="block text-blue-400 font-medium text-lg">
-                  Event Name
+                  Event Type
                 </label>
-                <p className="text-slate-200 text-base">{userEvent.name}</p>
+                <p className="text-slate-200 text-base">
+                  {userEvent.eventType}
+                </p>
               </div>
 
               {/* Event Date */}

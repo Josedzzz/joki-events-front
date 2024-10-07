@@ -30,6 +30,7 @@ export default function UserEventCatd({
         <p className="text-gray-500 text-sm">
           {new Date(userEvent.eventDate).toLocaleDateString()}
         </p>
+        <p className="text-gray-500 text-sm">{userEvent.eventType}</p>
       </div>
     </div>
   );
