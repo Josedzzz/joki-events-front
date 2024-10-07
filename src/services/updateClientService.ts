@@ -129,3 +129,50 @@ export const getClientAccountInfo = async (): Promise<ClientInfoResponse> => {
     throw error;
   }
 };
+
+/**
+ * Promise function that gets the response format for the delete client form
+ * @param clientId the id of the client to be delete
+ * @returns the api response interface with the information about it
+ */
+export const deleteClientAccount = async (
+  clientId: string,
+): Promise<ApiResponse> => {
+  // gets the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authToken="))
+    ?.split("=")[1];
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/clients/${clientId}/delete`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponse = await response.json();
+
+    // checks that the json contains the message for the delete client
+    if ("message" in successResponse) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the delete:", error);
+    throw error;
+  }
+};
