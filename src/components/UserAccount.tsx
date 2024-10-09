@@ -4,26 +4,15 @@ import {
   getClientAccountInfo,
   updateClient,
 } from "../services/updateClientService";
-//import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 export default function UserAccount() {
-  const [idCard, setIdCard] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  /**
-   * function to validate if a string contains only numbers
-   * @param idCard the ID card string to validate
-   * @returns true if the string contains only numbers, false otherwise
-   */
-  const validateIdCard = (idCard: string) => {
-    const idCardRegex = /^[0-9]+$/;
-    return idCardRegex.test(idCard);
-  };
 
   /**
    * function to validate if a string contains only numbers
@@ -69,7 +58,6 @@ export default function UserAccount() {
   const fetchClientInfo = async () => {
     try {
       const response = await getClientAccountInfo();
-      setIdCard(response.data.idCard);
       setPhone(response.data.phone);
       setEmail(response.data.email);
       setUsername(response.data.name);
@@ -89,10 +77,6 @@ export default function UserAccount() {
     setSuccess("");
 
     // validations before sending the form
-    if (!validateIdCard(idCard)) {
-      setError("Please enter a valid id card format");
-      return;
-    }
     if (!validatePhone(phone)) {
       setError("Please enter a valid phone format");
       return;
@@ -112,15 +96,13 @@ export default function UserAccount() {
 
     try {
       const message = await updateClient({
-        idCard,
         phone,
         email,
         name: username,
         address,
       });
       // Set a cookie that expires in 1 day for the authToken
-      // Cookies.set("authToken", message.token, { expires: 1 });
-      // console.log(message.token);
+      Cookies.set("authToken", message.token, { expires: 1 });
       setSuccess(message.message);
     } catch (error) {
       if (error instanceof Error) {
@@ -163,23 +145,6 @@ export default function UserAccount() {
           Account Information
         </h2>
         <form onSubmit={(e) => e.preventDefault()}>
-          <div className="mb-4">
-            <label
-              className="block text-slate-50 font-bold mb-2"
-              htmlFor="idCard"
-            >
-              <i className="fa-regular fa-id-card mr-2"></i> idCard
-            </label>
-            <input
-              type="text"
-              id="idCard"
-              className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Enter your id card"
-              value={idCard}
-              onChange={(e) => setIdCard(e.target.value)}
-            />
-          </div>
-
           <div className="mb-4">
             <label
               className="block text-slate-50 font-bold mb-2"
