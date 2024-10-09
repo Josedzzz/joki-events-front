@@ -33,6 +33,14 @@ interface ApiResponse {
   data: string;
 }
 
+export interface SearchEventCredentials {
+  eventName: string;
+  city: string;
+  startDate: string;
+  endDate: string;
+  eventType: string | null;
+}
+
 /**
  * Promise function that gets the response to get all events
  * @param page the page number to get the events
@@ -75,6 +83,57 @@ export const getAllClientEvents = async (
     }
   } catch (error) {
     console.error("Error during the update: ", error);
+    throw error;
+  }
+};
+
+/**
+ * Promise function that gets all the events depending on the searching credentials
+ * @param credentials the credentials to get the event
+ * @param page the page number to get the events
+ * @returns the api response with the events
+ */
+export const getSearchEvents = async (
+  credentials: SearchEventCredentials,
+  page: number = 0,
+): Promise<ApiResponseEvents> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authToken="))
+    ?.split("=")[1];
+
+  console.log(credentials.startDate);
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/events/search-event?page=${page}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(credentials),
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponseEvents = await response.json();
+    // checks that the json contains the correct format
+    if (successResponse.data) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the search: ", error);
     throw error;
   }
 };
