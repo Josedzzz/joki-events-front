@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { SearchEventCredentials } from "../services/clientEventService";
 
-export default function SearchEvent() {
+interface SearchEventProps {
+  onSearch: (credentials: SearchEventCredentials) => void;
+}
+
+export default function SearchEvent({ onSearch }: SearchEventProps) {
   const [searchType, setSearchType] = useState("name"); // Default search by name
   const [searchValue, setSearchValue] = useState("");
 
@@ -46,6 +51,20 @@ export default function SearchEvent() {
     }
   };
 
+  /**
+   * Handle the search button click and send the search credentials
+   */
+  const handleSearch = () => {
+    const credentials: SearchEventCredentials = {
+      eventName: searchType === "name" ? searchValue : "",
+      city: searchType === "city" ? searchValue : "",
+      startDate: searchType === "startDate" ? searchValue : "",
+      endDate: searchType === "endDate" ? searchValue : "",
+      eventType: searchType === "eventType" ? searchValue : null,
+    };
+    onSearch(credentials); // Call the parent function with the search credentials
+  };
+
   return (
     <div className="relative mb-6 flex flex-row gap-5 items-center">
       {/* ComboBox for search type */}
@@ -69,7 +88,10 @@ export default function SearchEvent() {
       </div>
 
       {/* Search button */}
-      <button className="flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105">
+      <button
+        onClick={handleSearch}
+        className="flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+      >
         Search
       </button>
     </div>
