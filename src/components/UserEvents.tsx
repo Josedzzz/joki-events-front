@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UserEventCard from "./UserEventCard";
 import UserEventInfo from "./UserEventInfo";
-import { getAllClientEvents } from "../services/clientEventService";
+import {
+  getSearchEvents,
+  SearchEventCredentials,
+} from "../services/clientEventService";
 import SearchEvent from "./SearchEvent";
 
 // Interface for the event localities
@@ -38,6 +41,14 @@ export default function UserEvents() {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchCredentials, setSearchCredentials] =
+    useState<SearchEventCredentials>({
+      eventName: "",
+      city: "",
+      startDate: "",
+      endDate: "",
+      eventType: null,
+    });
 
   /**
    * handling useState for when an user selects an event
@@ -55,29 +66,11 @@ export default function UserEvents() {
   };
 
   /**
-   * gets all the events paginated
-   * @param page the page to get the events
-   */
-  const handleGetClientEvents = async (page: number = 0) => {
-    setIsLoading(true);
-    try {
-      const response = await getAllClientEvents(page);
-      setEventsToDisplay(response.data.content);
-      setTotalPages(response.data.totalPages);
-      setCurrentPage(response.data.currentPage);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  /**
    * handle next page
    */
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
-      handleGetClientEvents(currentPage + 1);
+      handleGetSearchEvents(currentPage + 1);
     }
   };
 
@@ -86,13 +79,69 @@ export default function UserEvents() {
    */
   const handlePreviousPage = () => {
     if (currentPage > 0) {
-      handleGetClientEvents(currentPage - 1);
+      handleGetSearchEvents(currentPage - 1);
     }
   };
 
+  /**
+   * Function to format a date from an input (YYYY-MM-DD) and add a default time.
+   * @param date string in the format "YYYY-MM-DD" from the input
+   * @returns string in the format "YYYY-MM-DDTHH:MM:SS.SSS"
+   */
+  const formatDate = (date: string) => {
+    return `${date}T00:00:00.000`;
+  };
+
+  /**
+   * gets the events based on the search criteria
+   */
+  const handleGetSearchEvents = useCallback(
+    async (page: number = 0) => {
+      setIsLoading(true);
+      try {
+        const response = await getSearchEvents(searchCredentials, page);
+
+        // Verify if the response has events
+        if (Array.isArray(response.data?.content)) {
+          setEventsToDisplay(response.data.content);
+          setTotalPages(response.data.totalPages);
+          setCurrentPage(response.data.currentPage);
+        } else {
+          // otherwise set the events to display empty
+          setEventsToDisplay([]);
+          setTotalPages(1);
+          setCurrentPage(0);
+        }
+      } catch (error) {
+        setEventsToDisplay([]);
+        setTotalPages(1);
+        setCurrentPage(0);
+        console.error("Error fetching search results: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [searchCredentials],
+  );
+
+  /**
+   * handle search when the search button is clicked
+   */
+  const handleSearch = (credentials: SearchEventCredentials) => {
+    // Format startDate and endDate if they are not empty
+    const formattedCredentials = {
+      ...credentials,
+      startDate: credentials.startDate ? formatDate(credentials.startDate) : "",
+      endDate: credentials.endDate ? formatDate(credentials.endDate) : "",
+    };
+
+    setSearchCredentials(formattedCredentials);
+    handleGetSearchEvents(0); // Reset to the first page with new search
+  };
+
   useEffect(() => {
-    handleGetClientEvents();
-  }, []);
+    handleGetSearchEvents(); // Fetch all events on initial render
+  }, [handleGetSearchEvents]);
 
   if (selectedEvent) {
     return (
@@ -102,7 +151,7 @@ export default function UserEvents() {
 
   return (
     <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6">
-      <SearchEvent />
+      <SearchEvent onSearch={handleSearch} />
 
       <div className="mb-4 flex justify-between">
         <button
