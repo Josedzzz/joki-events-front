@@ -1,5 +1,4 @@
 interface ClientInfo {
-  idCard: string;
   phone: string;
   email: string;
   name: string;
@@ -13,7 +12,6 @@ interface ClientInfoResponse {
 }
 
 interface UpdateClientCredentials {
-  idCard: string;
   phone: string;
   email: string;
   name: string;
