@@ -1,5 +1,7 @@
 import UserEventLocality from "./UserEventLocality";
 import { Locality, UserEvent } from "./UserEvents";
+import { orderLocality } from "../services/clientEventService";
+import { useState } from "react";
 
 // Interface for the props of the component
 interface UserEventInfoProps {
@@ -11,6 +13,50 @@ export default function UserEventInfo({
   userEvent,
   onBack,
 }: UserEventInfoProps) {
+  const [selectedLocality, setSelectedLocality] = useState<Locality | null>(
+    null,
+  );
+  const [ticketsSelected, setTicketsSelected] = useState(1);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  /**
+   * change the selected locality and the tickets quantity
+   * @param locality the selected locality
+   */
+  const handleSelectLocality = (locality: Locality) => {
+    setSelectedLocality(locality);
+    setTicketsSelected(1);
+  };
+
+  /**
+   * handles the submission of the order locality event
+   */
+  const handleOrderLocality = async () => {
+    setError("");
+    setSuccess("");
+
+    if (selectedLocality) {
+      const credentials = {
+        eventId: userEvent.id,
+        localityName: selectedLocality.name,
+        totalPaymentAmount: selectedLocality.price * ticketsSelected,
+        ticketsSelected: ticketsSelected,
+      };
+
+      try {
+        const response = await orderLocality(credentials);
+        setSuccess(response.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred.");
+        }
+      }
+    }
+  };
+
   return (
     <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto w-full mt-6 mb-6">
       {/* Button to go back */}
@@ -94,9 +140,34 @@ export default function UserEventInfo({
         <h3 className="text-xl font-bold text-slate-50">Localities</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
           {userEvent.localities.map((locality: Locality) => (
-            <UserEventLocality key={locality.name} locality={locality} />
+            <UserEventLocality
+              key={locality.name}
+              locality={locality}
+              isSelected={selectedLocality?.name === locality.name} // Determina si la localidad está seleccionada
+              onSelect={() => handleSelectLocality(locality)} // Manejador de selección
+              ticketsSelected={ticketsSelected}
+              setTicketsSelected={setTicketsSelected}
+              isDisabled={
+                selectedLocality?.name !== locality.name &&
+                selectedLocality !== null
+              }
+            />
           ))}
         </div>
+
+        {selectedLocality && (
+          <button
+            onClick={handleOrderLocality}
+            className="mt-4 text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            <i className="fa-solid fa-cart-shopping mr-1"></i> Add to cart
+          </button>
+        )}
+
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+        {success && (
+          <p className="text-green-500 text-center mt-4">{success}</p>
+        )}
 
         {/* Locality Image */}
         <div className="mt-6">
@@ -109,13 +180,6 @@ export default function UserEventInfo({
             className="w-full h-64 object-cover rounded-lg shadow-lg"
           />
         </div>
-
-        <button
-          onClick={onBack}
-          className="mt-4 text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
-        >
-          <i className="fa-solid fa-cart-shopping mr-1"></i> Add to cart
-        </button>
       </div>
     </div>
   );
