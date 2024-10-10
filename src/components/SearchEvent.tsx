@@ -10,6 +10,34 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
   const [searchValue, setSearchValue] = useState("");
 
   /**
+   * Handle the search button click and send the search credentials
+   */
+  const handleSearch = () => {
+    const credentials: SearchEventCredentials = {
+      eventName: searchType === "name" ? searchValue : "",
+      city: searchType === "city" ? searchValue : "",
+      startDate: searchType === "startDate" ? searchValue : "",
+      endDate: searchType === "endDate" ? searchValue : "",
+      eventType: searchType === "eventType" ? searchValue : null,
+    };
+    onSearch(credentials); // Call the parent function with the search credentials
+  };
+
+  /**
+   * handle the clear button click and send an empty search credentials to clear all the filters
+   */
+  const clearSearch = () => {
+    const credentials: SearchEventCredentials = {
+      eventName: "",
+      city: "",
+      startDate: "",
+      endDate: "",
+      eventType: null,
+    };
+    onSearch(credentials);
+  };
+
+  /**
    * Render input field based on the selected search type
    */
   const renderInputField = () => {
@@ -51,20 +79,6 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
     }
   };
 
-  /**
-   * Handle the search button click and send the search credentials
-   */
-  const handleSearch = () => {
-    const credentials: SearchEventCredentials = {
-      eventName: searchType === "name" ? searchValue : "",
-      city: searchType === "city" ? searchValue : "",
-      startDate: searchType === "startDate" ? searchValue : "",
-      endDate: searchType === "endDate" ? searchValue : "",
-      eventType: searchType === "eventType" ? searchValue : null,
-    };
-    onSearch(credentials); // Call the parent function with the search credentials
-  };
-
   return (
     <div className="relative mb-6 flex flex-row gap-5 items-center">
       {/* ComboBox for search type */}
@@ -93,6 +107,14 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
         className="flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
       >
         Search
+      </button>
+
+      {/* Clear button */}
+      <button
+        onClick={clearSearch}
+        className="flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+      >
+        Clear
       </button>
     </div>
   );
