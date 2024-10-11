@@ -22,6 +22,13 @@ interface ApiResponseLocalities {
   };
 }
 
+interface CredentialsDeleteCartLocality {
+  eventId: string;
+  localityName: string;
+  totalPaymentAmount: number;
+  ticketsSelected: number;
+}
+
 interface ApiResponse {
   status: string;
   message: string;
@@ -72,6 +79,56 @@ export const getClientShoppingCart = async (
     }
   } catch (error) {
     console.error("Error getting the client shopping cart: ", error);
+    throw error;
+  }
+};
+
+/**
+ * Promise function that gets the response for the delete
+ * @param credentials the credentials of the locality to be delete
+ * @returns the api response with the information about the delete
+ */
+export const deleteLocalityOrder = async (
+  credentials: CredentialsDeleteCartLocality,
+): Promise<ApiResponse> => {
+  // get the cookie token
+  const authToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("authToken="))
+    ?.split("=")[1];
+
+  const userId = localStorage.getItem("userId");
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/clients/cancel-locality-order/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(credentials),
+      },
+    );
+
+    if (!response.ok) {
+      // handle the error response
+      const errorResponse: ApiResponse = await response.json();
+      throw new Error(errorResponse.message);
+    }
+
+    // read the response as a json
+    const successResponse: ApiResponse = await response.json();
+
+    // checks that the json contains the message for the delete client
+    if ("message" in successResponse) {
+      return successResponse;
+    } else {
+      throw new Error("Unexpected response format");
+    }
+  } catch (error) {
+    console.error("Error during the delete:", error);
     throw error;
   }
 };
