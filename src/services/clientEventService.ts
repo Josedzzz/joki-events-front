@@ -110,8 +110,6 @@ export const getSearchEvents = async (
     .find((row) => row.startsWith("authToken="))
     ?.split("=")[1];
 
-  console.log(credentials.startDate);
-
   try {
     const response = await fetch(
       `http://localhost:8080/api/events/search-event?page=${page}`,
