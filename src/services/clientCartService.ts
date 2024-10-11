@@ -3,6 +3,7 @@ export interface LocalityOrder {
   numTicketsSelected: number;
   localityName: string;
   totalPaymentAmount: number;
+  eventId: string;
   eventName: string;
   address: string;
   city: string;
