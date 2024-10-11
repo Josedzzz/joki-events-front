@@ -22,10 +22,22 @@ export default function UserCart() {
     setIsLoading(true);
     try {
       const response = await getClientShoppingCart(page);
-      setLocalitiesToDisplay(response.data.content);
-      setTotalPages(response.data.totalPages);
-      setCurrentPage(response.data.currentPage);
+
+      // verify if the response has localities
+      if (Array.isArray(response.data.content)) {
+        setLocalitiesToDisplay(response.data.content);
+        setTotalPages(response.data.totalPages);
+        setCurrentPage(response.data.currentPage);
+      } else {
+        // otherwise set the events to display empty
+        setLocalitiesToDisplay([]);
+        setTotalPages(1);
+        setCurrentPage(0);
+      }
     } catch (error) {
+      setLocalitiesToDisplay([]);
+      setTotalPages(1);
+      setCurrentPage(0);
       console.error(error);
     } finally {
       setIsLoading(false);
