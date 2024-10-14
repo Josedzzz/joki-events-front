@@ -13,13 +13,18 @@ export default function RestorePasswordCard() {
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Handle sending verification code
    */
   const handleSendVerificationCode = async () => {
+    setIsLoading(true);
+    setError("");
+    setSuccess("");
+
     try {
-      const response = await sendRecoverPasswordCode(email);
+      const response = await sendRecoverPasswordCode({ email: email });
       setSuccess(response.message);
       setIsCodeSent(true); // Show verification code and new password fields
       setError("");
@@ -29,6 +34,8 @@ export default function RestorePasswordCard() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,6 +61,8 @@ export default function RestorePasswordCard() {
       const response = await recoverPasswordCode(credentials);
       setSuccess(response.message);
       setError("");
+      // reload the page after successfully password update
+      window.location.reload();
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -124,9 +133,18 @@ export default function RestorePasswordCard() {
 
         <button
           onClick={handleSendVerificationCode}
-          className="w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+          disabled={isLoading}
+          className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+            isLoading
+              ? "bg-blue-200 cursor-not-allowed"
+              : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+          }`}
         >
-          Send Verification Code
+          {isLoading ? (
+            <i className="fa fa-spinner fa-spin"></i>
+          ) : (
+            "Send Verification Code"
+          )}
         </button>
 
         {/* Show this part only after the verification code is sent */}
