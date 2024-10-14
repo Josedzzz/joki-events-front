@@ -4,6 +4,10 @@ interface ApiResponse {
   data: string;
 }
 
+interface SendVerificationCodeCredentials {
+  email: string;
+}
+
 interface RecoverPasswordCredentials {
   email: string;
   verificationCode: string;
@@ -16,7 +20,7 @@ interface RecoverPasswordCredentials {
  * @returns the response message
  */
 export const sendRecoverPasswordCode = async (
-  email: string,
+  credentials: SendVerificationCodeCredentials,
 ): Promise<ApiResponse> => {
   try {
     const response = await fetch(
@@ -26,7 +30,7 @@ export const sendRecoverPasswordCode = async (
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(email),
+        body: JSON.stringify(credentials),
       },
     );
 
@@ -46,7 +50,7 @@ export const sendRecoverPasswordCode = async (
       throw new Error("Unexpected response format");
     }
   } catch (error) {
-    console.error("Error during login:", error);
+    console.error("Error sending the verification code", error);
     throw error;
   }
 };
