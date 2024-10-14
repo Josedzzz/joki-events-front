@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/loginService";
 import Cookies from "js-cookie";
+import RestorePasswordCard from "./RestorePasswordCard";
 
 export default function LoginCard() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function LoginCard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showRecoverPassword, setShowRecoverPassword] = useState(false);
 
   /**
    * Helper function to validate the email format
@@ -98,7 +100,9 @@ export default function LoginCard() {
     }
   };
 
-  return (
+  return showRecoverPassword ? (
+    <RestorePasswordCard />
+  ) : (
     <main className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-2 show-animation">
       <div className="w-full max-w-md bg-custom-dark p-8 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-blue-400 text-center mb-6">
@@ -175,7 +179,13 @@ export default function LoginCard() {
         )}
 
         <p className="text-gray-600 text-sm text-center mt-6">
-          Forgot your password? Click here
+          Forgot your password?{" "}
+          <span
+            className="text-blue-400 cursor-pointer"
+            onClick={() => setShowRecoverPassword(true)}
+          >
+            Click here
+          </span>
         </p>
       </div>
     </main>
