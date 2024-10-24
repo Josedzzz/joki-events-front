@@ -4,6 +4,7 @@ import {
   LocalityOrder,
 } from "../services/clientCartService";
 import UserCartEvent from "./UserCartEvent";
+import { getLinkClientPayment } from "../services/clientPayment";
 
 export default function UserCart() {
   const [localitiesToDisplay, setLocalitiesToDisplay] = useState<
@@ -13,6 +14,7 @@ export default function UserCart() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [error, setError] = useState("");
 
   /**
    * gets all the client cart localities paginated
@@ -41,6 +43,28 @@ export default function UserCart() {
       console.error(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  /**
+   * gets the link of the MercadoPago service to let the user do the payment
+   */
+  const handleRedirectPayment = async () => {
+    try {
+      const response = await getLinkClientPayment();
+
+      // verify if the response contains a link
+      if (response.data) {
+        window.open(response.data, "_blank");
+      } else {
+        setError("Error. The link to do the payment is empty");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   };
 
@@ -134,10 +158,14 @@ export default function UserCart() {
           />
         </div>
 
-        <button className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105">
+        <button
+          className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+          onClick={handleRedirectPayment}
+        >
           <i className="fa-solid fa-credit-card"></i> Pay Now
         </button>
       </div>
+      {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </div>
   );
 }
