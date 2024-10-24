@@ -45,7 +45,7 @@ export const getLinkClientPayment = async (): Promise<ApiResponse> => {
       throw new Error("Unexpected response format");
     }
   } catch (error) {
-    console.error("Error during the delete:", error);
+    console.error("Error during the payment: ", error);
     throw error;
   }
 };
