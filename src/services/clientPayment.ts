@@ -8,7 +8,7 @@ interface ApiResponse {
  * Promise function that gets the link to let the user do the payment on MercadoPago
  * @returns the api response with the link and an information message
  */
-export const redirectClientPayment = async (): Promise<ApiResponse> => {
+export const getLinkClientPayment = async (): Promise<ApiResponse> => {
   // get the cookie token of the user
   const authToken = document.cookie
     .split("; ")
