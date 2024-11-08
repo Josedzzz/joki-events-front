@@ -18,21 +18,23 @@ export default function AdminHeader({
    * @returns the tailwind css classes to be added
    */
   const linkClasses = (link: string) =>
-    `hover:text-blue-400 font-bold text-sm sm:text-md md:text-lg transition duration-300 ease-in-out ${
+    `hover:text-blue-400 hover:scale-105 font-bold text-sm sm:text-md md:text-lg transition duration-300 ease-in-out ${
       content === link
         ? "border-b-2 border-blue-400 text-blue-400"
-        : "text-white hover:text-blue-400 font-bold text-sm sm:text-md md:text-lg"
+        : "text-white hover:text-blue-400"
     }`;
 
   return (
-    <header className="mt-3 h-12 w-full flex justify-between items-center max-w-5xl mx-auto p-2 appearr">
+    <header className="mt-3 h-12 w-full flex justify-between items-center max-w-5xl mx-auto p-2 fade-in">
       <div className="flex items-center space-x-1 gap-3">
         <h1 className="text-xl sm:text-3xl md:text-4xl text-slate-50 font-bold">
           Admin Menu
         </h1>
         <i className="fa-solid fa-paper-plane text-xl sm:text-3xl md:text-4xl text-blue-400"></i>
       </div>
-      <nav className="space-x-4 sm:space-x-8">
+
+      {/* Navigation links */}
+      <nav className="flex overflow-x-auto space-x-4 sm:space-x-8">
         <a
           onClick={() => toggleContent("events")}
           className={linkClasses("events")}
@@ -55,13 +57,13 @@ export default function AdminHeader({
           onClick={() => toggleContent("account")}
           className={linkClasses("account")}
         >
-          My account
+          Account
         </a>
         <a
           onClick={() => navigate("/login")}
           className={linkClasses("log-out")}
         >
-          Log out
+          Logout
         </a>
       </nav>
     </header>
