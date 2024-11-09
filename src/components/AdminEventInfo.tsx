@@ -16,7 +16,6 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const [name, setName] = useState(event?.name || "");
   const [city, setCity] = useState(event?.city || "");
   const [address, setAddress] = useState(event?.address || "");
-  const [date, setDate] = useState(event?.eventDate || "");
   const [totalAvailablePlaces, setTotalAvailablePlaces] = useState(
     event?.totalAvailablePlaces || 0,
   );
@@ -32,6 +31,19 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const [eventType, setEventType] = useState(event?.eventType || "CONCERT");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  /**
+   * format the event date
+   * @param dateString the date to format
+   * @returns a formated date
+   */
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 16);
+  };
+
+  const [date, setDate] = useState(formatDate(event?.eventDate || ""));
 
   /**
    * handle event image file selection
