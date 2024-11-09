@@ -58,7 +58,7 @@ export default function UserEventInfo({
   };
 
   return (
-    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto w-full mt-6 mb-6">
+    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto w-full mt-6 mb-6 fade-in">
       {/* Button to go back */}
       <button
         onClick={onBack}
