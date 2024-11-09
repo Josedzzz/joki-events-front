@@ -13,7 +13,7 @@ export default function AdminCouponCard({
   return (
     <div
       onClick={onClick}
-      className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 transition duration-300 ease-in-out"
+      className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 hover:scale-105 transition duration-300 ease-in-out bounce-in"
     >
       <div className="p-4">
         <h3 className="text-lg font-bold text-custom-white mb-2">
