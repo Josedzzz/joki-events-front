@@ -6,7 +6,6 @@ interface CreateCouponCredentials {
 }
 
 interface UpdateCouponCredentials {
-  id: string;
   discount: number;
   expirationDate: string;
   minPurchaseAmount: number;
@@ -138,6 +137,7 @@ export const createCoupon = async (
  * @returns the api response interface with the information about it
  */
 export const updateCoupon = async (
+  couponId: string,
   credentials: UpdateCouponCredentials,
 ): Promise<ApiResponse> => {
   // get the cookie token
@@ -148,7 +148,7 @@ export const updateCoupon = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/update-coupon/${credentials.id}`,
+      `http://localhost:8080/api/admin/update-coupon/${couponId}`,
       {
         method: "POST",
         headers: {
