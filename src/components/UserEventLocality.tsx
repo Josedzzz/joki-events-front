@@ -21,7 +21,7 @@ export default function UserEventLocality({
   return (
     <div
       onClick={onSelect}
-      className={`p-2 rounded-lg shadow-md transition-transform ${
+      className={`p-2 rounded-lg shadow-md transition-transform bounce-in ${
         isSelected ? "bg-blue-500 border-4 border-blue-500" : "bg-custom-gray"
       } transform hover:scale-105 cursor-pointer`}
     >

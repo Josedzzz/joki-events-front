@@ -45,7 +45,7 @@ export default function UserCartEvent({ userEvent }: UserCartEventProps) {
   };
 
   return (
-    <div className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 hover:scale-105 transition duration-300 ease-in-out">
+    <div className="bg-custom-dark rounded-2xl shadow-lg overflow-hidden max-w-xs border-4 border-transparent hover:border-blue-400 hover:scale-105 transition duration-300 ease-in-out bounce-in">
       {/* Event Image */}
       <img
         className="w-full h-32 sm:h-48 object-cover"
