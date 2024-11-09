@@ -150,7 +150,7 @@ export default function UserEvents() {
   }
 
   return (
-    <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6">
+    <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 slide-in-left">
       <SearchEvent onSearch={handleSearch} />
 
       <div className="mb-4 flex justify-between">

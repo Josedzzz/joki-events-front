@@ -139,7 +139,7 @@ export default function UserAccount() {
   }, []);
 
   return (
-    <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center">
+    <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 flex items-center slide-in-left">
       <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-xl mx-auto flex flex-col">
         <h2 className="text-xl font-bold text-blue-400 mb-4">
           Account Information

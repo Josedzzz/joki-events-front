@@ -101,7 +101,7 @@ export default function UserCart() {
   }, []);
 
   return (
-    <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6">
+    <div className="bg-custom-black w-full min-h-[calc(100vh-4rem)] p-6 slide-in-left">
       {/* Pagination buttons */}
       <div className="mb-4 flex justify-between">
         <button
