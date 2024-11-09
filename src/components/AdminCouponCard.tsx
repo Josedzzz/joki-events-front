@@ -10,6 +10,19 @@ export default function AdminCouponCard({
   coupon,
   onClick,
 }: AdminCouponCardProps) {
+  /**
+   * format the expirationDate Array
+   * @param date the date to format
+   * @returns the formated date
+   */
+  const formatExpirationDate = (date: string | number[]): string => {
+    if (Array.isArray(date)) {
+      const [year, month, day] = date;
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    }
+    return date;
+  };
+
   return (
     <div
       onClick={onClick}
@@ -23,7 +36,7 @@ export default function AdminCouponCard({
           {"Discount: " + coupon.discountPercent + "%"}
         </p>
         <p className="text-custom-white">
-          {new Date(coupon.expirationDate).toLocaleDateString()}
+          Expiration: {formatExpirationDate(coupon.expirationDate)}
         </p>
       </div>
     </div>

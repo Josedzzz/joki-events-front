@@ -20,14 +20,28 @@ export default function AdminCouponInfo({
   const [discountPercent, setDiscountPercent] = useState(
     coupon?.discountPercent || 0,
   );
-  const [expirationDate, setExpirationDate] = useState(
-    coupon ? coupon.expirationDate.split("T")[0] : "",
-  );
   const [minPurchaseAmount, setMinPurchaseAmount] = useState(
     coupon?.minPurchaseAmount || 0,
   );
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  /**
+   * format the expirationDate Array
+   * @param date the date to format
+   * @returns the formated date
+   */
+  const formatExpirationDate = (date: string | number[]): string => {
+    if (Array.isArray(date)) {
+      const [year, month, day] = date;
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    }
+    return date;
+  };
+
+  const [expirationDate, setExpirationDate] = useState(
+    formatExpirationDate(coupon?.expirationDate || ""),
+  );
 
   /**
    * function to validate that the coupon name is at least 3 characters
@@ -144,8 +158,7 @@ export default function AdminCouponInfo({
         setError("The coupon does not contain an id");
         return;
       }
-      const response = await updateCoupon({
-        id: coupon?.id,
+      const response = await updateCoupon(coupon.id, {
         discount: discountPercent,
         expirationDate: formattedExpirationDate,
         minPurchaseAmount,
