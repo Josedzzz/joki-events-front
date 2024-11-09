@@ -47,7 +47,7 @@ export const updateAdmin = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${adminId}/update/`,
+      `http://localhost:8080/api/admin/${adminId}/update`,
       {
         method: "POST",
         headers: {
