@@ -254,8 +254,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
         setError("The event does not contain an id");
         return;
       }
-      const response = await updateEvent({
-        id: event.id,
+      const response = await updateEvent(event.id, {
         name,
         city,
         address,

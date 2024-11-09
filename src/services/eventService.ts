@@ -11,7 +11,6 @@ interface CreateEventCredentials {
 }
 
 interface UpdateEventCredentials {
-  id: string;
   name: string;
   city: string;
   address: string;
@@ -165,6 +164,7 @@ export const createEvent = async (
  * @returns the api response with the information about it
  */
 export const updateEvent = async (
+  eventId: string,
   credentials: UpdateEventCredentials,
 ): Promise<ApiResponse> => {
   // get the cookie token
@@ -175,7 +175,7 @@ export const updateEvent = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/update-event/${credentials.id}`,
+      `http://localhost:8080/api/admin/update-event/${eventId}`,
       {
         method: "POST",
         headers: {
