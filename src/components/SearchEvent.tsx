@@ -6,7 +6,7 @@ interface SearchEventProps {
 }
 
 export default function SearchEvent({ onSearch }: SearchEventProps) {
-  const [searchType, setSearchType] = useState("name"); // Default search by name
+  const [searchType, setSearchType] = useState("name");
   const [searchValue, setSearchValue] = useState("");
 
   /**
@@ -20,7 +20,7 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
       endDate: searchType === "endDate" ? searchValue : "",
       eventType: searchType === "eventType" ? searchValue : null,
     };
-    onSearch(credentials); // Call the parent function with the search credentials
+    onSearch(credentials);
   };
 
   /**
@@ -47,7 +47,7 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
           type="date"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="w-2/4 bg-custom-gray text-slate-50 pl-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full sm:w-2/4 bg-custom-gray text-slate-50 pl-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       );
     } else if (searchType === "eventType") {
@@ -55,7 +55,7 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
         <select
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="w-2/4 bg-custom-gray text-slate-50 pl-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full sm:w-2/4 bg-custom-gray text-slate-50 pl-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <option value="">Select event type</option>
           <option value="CONCERT">Concert</option>
@@ -73,19 +73,19 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
           placeholder="Enter your search"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="w-2/4 bg-custom-gray text-slate-50 pl-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full sm:w-2/4 bg-custom-gray text-slate-50 pl-10 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       );
     }
   };
 
   return (
-    <div className="relative mb-6 flex flex-row gap-5 items-center">
+    <div className="relative mb-6 flex flex-col sm:flex-row gap-3 sm:gap-5 items-center">
       {/* ComboBox for search type */}
       <select
         value={searchType}
         onChange={(e) => setSearchType(e.target.value)}
-        className="w-3/12 bg-custom-gray text-slate-50 px-5 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="w-full sm:w-3/12 bg-custom-gray text-slate-50 px-5 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
         <option value="name">Search by name</option>
         <option value="city">Search by city</option>
@@ -97,14 +97,13 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
       {/* Search input field (changes based on search type) */}
       <div className="relative w-full">
         {renderInputField()}
-        {/* Search icon */}
         <i className="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-50"></i>
       </div>
 
       {/* Search button */}
       <button
         onClick={handleSearch}
-        className="flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+        className="w-full sm:w-auto flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
       >
         Search
       </button>
@@ -112,7 +111,7 @@ export default function SearchEvent({ onSearch }: SearchEventProps) {
       {/* Clear button */}
       <button
         onClick={clearSearch}
-        className="flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+        className="w-full sm:w-auto flex flex-row text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
       >
         Clear
       </button>

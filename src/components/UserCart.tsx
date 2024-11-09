@@ -135,36 +135,41 @@ export default function UserCart() {
         ))}
       </div>
 
-      {/* Inputs for total price and coupon code */}
-      <div className="mt-6">
-        <div className="mb-4">
+      {/* Container with max width and centered content */}
+      <div className="mt-6 mx-auto max-w-md space-y-4">
+        {/* Total Price Input */}
+        <div>
           <label className="block text-slate-50 font-medium">Total Price</label>
           <input
             type="text"
             value={`$${totalPrice}`}
             readOnly
-            className="bg-custom-gray text-slate-50 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-      </div>
-
-      <div className="flex items-center mb-4">
-        <div className="flex-1 mr-4">
-          <label className="block text-slate-50 font-medium">Coupon Code</label>
-          <input
-            type="text"
-            placeholder="Enter coupon code"
-            className="bg-custom-gray text-slate-50 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full bg-custom-gray text-slate-50 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
 
-        <button
-          className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
-          onClick={handleRedirectPayment}
-        >
-          <i className="fa-solid fa-credit-card"></i> Pay Now
-        </button>
+        {/* Coupon Code and Pay Now Button */}
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-slate-50 font-medium">
+              Coupon Code
+            </label>
+            <input
+              type="text"
+              placeholder="Enter coupon code"
+              className="w-full bg-custom-gray text-slate-50 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <button
+            className="w-full text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+            onClick={handleRedirectPayment}
+          >
+            <i className="fa-solid fa-credit-card"></i> Pay Now
+          </button>
+        </div>
       </div>
+
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
     </div>
   );
