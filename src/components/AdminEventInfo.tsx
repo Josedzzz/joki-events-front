@@ -291,7 +291,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   };
 
   return (
-    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto show-animation">
+    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto fade-in">
       <button
         onClick={onBack}
         className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out mb-4"
@@ -411,7 +411,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
         {/* Localities Table */}
         <div className="mb-4">
           <label className="block text-custom-white font-bold mb-2">
-            <i className="fa-solid fa-list-ol mr-1"></i>Event Localities
+            <i className="fa-solid fa-list-ol mr-1"></i> Event Localities
           </label>
           <button
             type="button"
@@ -420,81 +420,86 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
           >
             <i className="fa-solid fa-plus mr-1"></i> Add Locality
           </button>
-          <table className="table-auto w-full text-left bg-custom-dark border-2 border-blue-400 rounded-xl text-white overflow-hidden">
-            <thead>
-              <tr className="bg-custom-dark text-white">
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Price</th>
-                <th className="px-4 py-2">Max Capacity</th>
-                <th className="px-4 py-2">Current Occupancy</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {localities.map((loc, index) => (
-                <tr key={index} className="border-t border-transparent">
-                  <td className="px-4 py-2">
-                    <input
-                      type="text"
-                      className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      placeholder="Enter name"
-                      value={loc.name}
-                      onChange={(e) =>
-                        handleInputChange(index, "name", e.target.value)
-                      }
-                    />
-                  </td>
-                  <td className="px-4 py-2">
-                    <input
-                      type="text"
-                      className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
-                      placeholder="Enter price"
-                      value={loc.price}
-                      onChange={(e) =>
-                        handleInputChange(
-                          index,
-                          "price",
-                          Number(e.target.value),
-                        )
-                      }
-                    />
-                  </td>
-                  <td className="px-4 py-2">
-                    <input
-                      type="text"
-                      className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
-                      placeholder="Enter max capacity"
-                      value={loc.maxCapacity}
-                      onChange={(e) =>
-                        handleInputChange(
-                          index,
-                          "maxCapacity",
-                          Number(e.target.value),
-                        )
-                      }
-                    />
-                  </td>
-                  <td className="px-4 py-2">
-                    <input
-                      type="text"
-                      className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
-                      value={loc.currentOccupancy}
-                      readOnly
-                    />
-                  </td>
-                  <td className="px-4 py-2">
-                    <button
-                      type="button"
-                      onClick={() => deleteLocality(index)}
-                      className="bg-blue-400 w-full text-slate-50 font-bold p-2 border-2 border-transparent rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  </td>
+
+          <div className="overflow-x-auto">
+            <table className="table-auto w-full text-left bg-custom-dark border-2 border-blue-400 rounded-xl text-white">
+              <thead>
+                <tr className="bg-custom-dark text-white">
+                  <th className="px-4 py-2 whitespace-nowrap">Name</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Price</th>
+                  <th className="px-4 py-2 whitespace-nowrap">Max Capacity</th>
+                  <th className="px-4 py-2 whitespace-nowrap">
+                    Current Occupancy
+                  </th>
+                  <th className="px-4 py-2 whitespace-nowrap">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {localities.map((loc, index) => (
+                  <tr key={index} className="border-t border-transparent">
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        placeholder="Enter name"
+                        value={loc.name}
+                        onChange={(e) =>
+                          handleInputChange(index, "name", e.target.value)
+                        }
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
+                        placeholder="Enter price"
+                        value={loc.price}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "price",
+                            Number(e.target.value),
+                          )
+                        }
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
+                        placeholder="Enter max capacity"
+                        value={loc.maxCapacity}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "maxCapacity",
+                            Number(e.target.value),
+                          )
+                        }
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="text"
+                        className="bg-transparent border-2 border-blue-400 w-full rounded-lg text-white p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none"
+                        value={loc.currentOccupancy}
+                        readOnly
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      <button
+                        type="button"
+                        onClick={() => deleteLocality(index)}
+                        className="bg-blue-400 w-full text-slate-50 font-bold p-2 border-2 border-transparent rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Locality Image input */}

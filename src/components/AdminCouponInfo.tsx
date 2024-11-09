@@ -184,7 +184,7 @@ export default function AdminCouponInfo({
   };
 
   return (
-    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto show-animation">
+    <div className="bg-custom-dark rounded-lg shadow-lg p-6 max-w-5xl mx-auto fade-in">
       <button
         onClick={onBack}
         className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out mb-4"
