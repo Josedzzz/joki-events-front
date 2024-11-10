@@ -105,7 +105,7 @@ export const getAllEvents = async (
       throw new Error("Unexpected response format");
     }
   } catch (error) {
-    console.error("Error during the update: ", error);
+    console.error("Error during the create: ", error);
     throw error;
   }
 };
@@ -140,6 +140,7 @@ export const createEvent = async (
     if (!response.ok) {
       // handle the error response
       const errorResponse: ApiResponse = await response.json();
+      console.log(errorResponse);
       throw new Error(errorResponse.message);
     }
 
@@ -202,7 +203,7 @@ export const updateEvent = async (
       throw new Error("Unexpected response format");
     }
   } catch (error) {
-    console.error("Error during the update:", error);
+    console.error("Error during the delete:", error);
     throw error;
   }
 };
@@ -221,7 +222,7 @@ export const deleteEvent = async (eventId: string): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/delete-event/${eventId}`,
+      `http://localhost:8080/api/admin/${eventId}/delete-event`,
       {
         method: "POST",
         headers: {
