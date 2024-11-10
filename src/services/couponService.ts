@@ -148,7 +148,7 @@ export const updateCoupon = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/update-coupon/${couponId}`,
+      `http://localhost:8080/api/admin/${couponId}/update-coupon`,
       {
         method: "POST",
         headers: {
@@ -194,7 +194,7 @@ export const deleteCoupon = async (couponId: string): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/delete-coupon/${couponId}`,
+      `http://localhost:8080/api/admin/${couponId}/delete-coupon`,
       {
         method: "POST",
         headers: {

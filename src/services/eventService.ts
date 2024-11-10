@@ -175,7 +175,7 @@ export const updateEvent = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/update-event/${eventId}`,
+      `http://localhost:8080/api/admin/${eventId}/update-event`,
       {
         method: "POST",
         headers: {
