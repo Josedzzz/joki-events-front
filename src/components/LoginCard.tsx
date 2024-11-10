@@ -12,6 +12,7 @@ export default function LoginCard() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showRecoverPassword, setShowRecoverPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Helper function to validate the email format
@@ -49,6 +50,7 @@ export default function LoginCard() {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     try {
       if (isAdmin) {
@@ -97,6 +99,8 @@ export default function LoginCard() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -166,9 +170,14 @@ export default function LoginCard() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="w-full text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              disabled={isLoading}
+              className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                isLoading
+                  ? "bg-blue-200 cursor-not-allowed"
+                  : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              }`}
             >
-              Login
+              {isLoading ? <i className="fa fa-spinner fa-spin"></i> : "Login"}
             </button>
           </div>
         </form>
