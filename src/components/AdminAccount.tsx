@@ -10,6 +10,7 @@ export default function AdminAccount() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * function to validate the email format
@@ -64,6 +65,7 @@ export default function AdminAccount() {
     }
 
     try {
+      setIsLoading(true);
       const message = await updateAdmin({ username, email });
       // Set a cookie that expires in 1 day for the authToken
       Cookies.set("authAdminToken", message.token, { expires: 1 });
@@ -74,6 +76,8 @@ export default function AdminAccount() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -124,9 +128,18 @@ export default function AdminAccount() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="w-full text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              disabled={isLoading}
+              className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                isLoading
+                  ? "bg-blue-400 cursor-not-allowed"
+                  : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              }`}
             >
-              Update data
+              {isLoading ? (
+                <i className="fa fa-spinner fa-spin"></i>
+              ) : (
+                "Update data"
+              )}
             </button>
           </div>
         </form>
