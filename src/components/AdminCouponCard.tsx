@@ -1,4 +1,4 @@
-import { Coupon } from "./AdminCoupons";
+import { Coupon } from "../services/couponService";
 
 // Interface for the props of the component
 interface AdminCouponCardProps {
@@ -11,16 +11,12 @@ export default function AdminCouponCard({
   onClick,
 }: AdminCouponCardProps) {
   /**
-   * format the expirationDate Array
-   * @param date the date to format
+   * format a date to the YYYY-MM-DD
+   * @param isoDate the date to format
    * @returns the formated date
    */
-  const formatExpirationDate = (date: string | number[]): string => {
-    if (Array.isArray(date)) {
-      const [year, month, day] = date;
-      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    }
-    return date;
+  const formatDate = (isoDate: string): string => {
+    return isoDate.substring(0, 10);
   };
 
   return (
@@ -36,8 +32,9 @@ export default function AdminCouponCard({
           {"Discount: " + coupon.discountPercent + "%"}
         </p>
         <p className="text-custom-white">
-          Expiration: {formatExpirationDate(coupon.expirationDate)}
+          Expiration: {formatDate(coupon.expirationDate)}
         </p>
+        <p className="text-custom-white">Type: {coupon.couponType}</p>
       </div>
     </div>
   );

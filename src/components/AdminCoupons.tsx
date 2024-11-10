@@ -1,17 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminCouponCard from "./AdminCouponCard";
 import AdminCouponInfo from "./AdminCouponInfo";
-import { getAllCoupons } from "../services/couponService";
-
-// Interface for the coupons
-export interface Coupon {
-  id: string;
-  name: string;
-  discountPercent: number;
-  expirationDate: string;
-  minPurchaseAmount: number;
-  used: boolean;
-}
+import { Coupon, getAllCoupons } from "../services/couponService";
 
 export default function AdminCoupons() {
   const [couponsToDisplay, setCouponsToDisplay] = useState<Coupon[]>([]);

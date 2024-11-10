@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Coupon } from "./AdminCoupons";
+import { Coupon } from "../services/couponService";
 import {
   createCoupon,
   deleteCoupon,
@@ -27,20 +27,16 @@ export default function AdminCouponInfo({
   const [success, setSuccess] = useState("");
 
   /**
-   * format the expirationDate Array
-   * @param date the date to format
+   * format a date to the YYYY-MM-DD
+   * @param isoDate the date to format
    * @returns the formated date
    */
-  const formatExpirationDate = (date: string | number[]): string => {
-    if (Array.isArray(date)) {
-      const [year, month, day] = date;
-      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    }
-    return date;
+  const formatDate = (isoDate: string): string => {
+    return isoDate.substring(0, 10);
   };
 
   const [expirationDate, setExpirationDate] = useState(
-    formatExpirationDate(coupon?.expirationDate || ""),
+    formatDate(coupon?.expirationDate || ""),
   );
 
   /**
