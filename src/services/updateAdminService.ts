@@ -95,7 +95,7 @@ export const getAdminAccountInfo = async (): Promise<AdminInfoResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/get-admin-account-info/${adminId}`,
+      `http://localhost:8080/api/admin/${adminId}/get-admin-account-info`,
       {
         method: "GET",
         headers: {
