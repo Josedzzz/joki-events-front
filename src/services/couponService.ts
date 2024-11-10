@@ -1,3 +1,13 @@
+// Interface for the coupons
+export interface Coupon {
+  id: string;
+  name: string;
+  discountPercent: number;
+  expirationDate: string;
+  minPurchaseAmount: number;
+  couponType: string;
+}
+
 interface CreateCouponCredentials {
   name: string;
   discount: number;
@@ -9,15 +19,6 @@ interface UpdateCouponCredentials {
   discount: number;
   expirationDate: string;
   minPurchaseAmount: number;
-}
-
-interface Coupon {
-  id: string;
-  name: string;
-  discountPercent: number;
-  expirationDate: string;
-  minPurchaseAmount: number;
-  used: boolean;
 }
 
 interface ApiResponseCoupons {
