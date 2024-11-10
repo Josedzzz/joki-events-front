@@ -23,8 +23,12 @@ export default function AdminCouponInfo({
   const [minPurchaseAmount, setMinPurchaseAmount] = useState(
     coupon?.minPurchaseAmount || 0,
   );
+  const [couponType, setCouponType] = useState(
+    coupon?.couponType || "INDIVIDUAL",
+  );
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * format a date to the YYYY-MM-DD
@@ -105,11 +109,13 @@ export default function AdminCouponInfo({
     const formattedExpirationDate = `${expirationDate}T23:59:59`;
 
     try {
+      setIsLoading(true);
       const response = await createCoupon({
         name,
         discount: discountPercent,
         expirationDate: formattedExpirationDate,
         minPurchaseAmount,
+        couponType,
       });
       setSuccess(response.message);
     } catch (error) {
@@ -118,6 +124,8 @@ export default function AdminCouponInfo({
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -154,6 +162,7 @@ export default function AdminCouponInfo({
         setError("The coupon does not contain an id");
         return;
       }
+      setIsLoading(true);
       const response = await updateCoupon(coupon.id, {
         discount: discountPercent,
         expirationDate: formattedExpirationDate,
@@ -166,6 +175,8 @@ export default function AdminCouponInfo({
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -181,6 +192,7 @@ export default function AdminCouponInfo({
         setError("The coupon does not contain an id");
         return;
       }
+      setIsLoading(true);
       const response = await deleteCoupon(coupon.id);
       setSuccess(response.message);
     } catch (error) {
@@ -189,6 +201,8 @@ export default function AdminCouponInfo({
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -258,6 +272,20 @@ export default function AdminCouponInfo({
               onChange={(e) => setMinPurchaseAmount(Number(e.target.value))}
             />
           </div>
+
+          <div className="mb-4">
+            <label className="block text-custom-white mb-2">
+              <i className="fa-solid fa-receipt mr-1"></i>Coupon Type
+            </label>
+            <select
+              value={couponType}
+              onChange={(e) => setCouponType(e.target.value)}
+              className="bg-custom-gray text-slate-50 w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="INDIVIDUAL">INDIVIDUAL</option>
+              <option value="UNIQUE">UNIQUE</option>
+            </select>
+          </div>
         </div>
 
         {/* Buttons */}
@@ -266,26 +294,53 @@ export default function AdminCouponInfo({
             <>
               <button
                 type="button"
-                className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={handleCouponUpdate}
+                disabled={isLoading}
+                className={`w-full md:w-1/5 text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                  isLoading
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+                }`}
               >
-                <i className="fa-solid fa-share mr-1"></i> Update
+                {isLoading ? (
+                  <i className="fa fa-spinner fa-spin"></i>
+                ) : (
+                  "Update"
+                )}
               </button>
               <button
                 type="button"
-                className="text-red-500 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={handleCouponDelete}
+                disabled={isLoading}
+                className={`w-full md:w-1/5 text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                  isLoading
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+                }`}
               >
-                <i className="fa-solid fa-trash mr-1"></i> Delete
+                {isLoading ? (
+                  <i className="fa fa-spinner fa-spin"></i>
+                ) : (
+                  "Delete"
+                )}
               </button>
             </>
           ) : (
             <button
               type="button"
-              className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
               onClick={handleCouponCreate}
+              disabled={isLoading}
+              className={`w-full md:w-1/5 text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                isLoading
+                  ? "bg-blue-400 cursor-not-allowed"
+                  : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              }`}
             >
-              <i className="fa-solid fa-plus mr-1"></i> Add Coupon
+              {isLoading ? (
+                <i className="fa fa-spinner fa-spin"></i>
+              ) : (
+                "Add Coupon"
+              )}
             </button>
           )}
         </div>
