@@ -173,7 +173,7 @@ export default function LoginCard() {
               disabled={isLoading}
               className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
                 isLoading
-                  ? "bg-blue-200 cursor-not-allowed"
+                  ? "bg-blue-400 cursor-not-allowed"
                   : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
               }`}
             >
