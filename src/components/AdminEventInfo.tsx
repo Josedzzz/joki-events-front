@@ -31,6 +31,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const [eventType, setEventType] = useState(event?.eventType || "CONCERT");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * format the event date
@@ -186,6 +187,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const handleEventCreate = async () => {
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     // Perform validation
     const errorMessage = validateEventData();
@@ -222,6 +224,8 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -232,6 +236,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const handleEventUpdate = async () => {
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     // Perform validation
     const errorMessage = validateEventData();
@@ -272,6 +277,8 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -282,6 +289,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
   const handleEventDelete = async () => {
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     try {
       if (!event?.id) {
@@ -298,6 +306,8 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -538,26 +548,53 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
             <>
               <button
                 type="button"
-                className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={handleEventUpdate}
+                disabled={isLoading}
+                className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                  isLoading
+                    ? "bg-blue-200 cursor-not-allowed"
+                    : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+                }`}
               >
-                <i className="fa-solid fa-share mr-1"></i> Update
+                {isLoading ? (
+                  <i className="fa fa-spinner fa-spin"></i>
+                ) : (
+                  "Update"
+                )}
               </button>
               <button
                 type="button"
-                className="text-red-500 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
                 onClick={handleEventDelete}
+                disabled={isLoading}
+                className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                  isLoading
+                    ? "bg-blue-200 cursor-not-allowed"
+                    : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+                }`}
               >
-                <i className="fa-solid fa-trash mr-1"></i> Delete
+                {isLoading ? (
+                  <i className="fa fa-spinner fa-spin"></i>
+                ) : (
+                  "Delete"
+                )}
               </button>
             </>
           ) : (
             <button
               type="button"
-              className="text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
               onClick={handleEventCreate}
+              disabled={isLoading}
+              className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                isLoading
+                  ? "bg-blue-200 cursor-not-allowed"
+                  : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+              }`}
             >
-              <i className="fa-solid fa-plus mr-1"></i> Add Event
+              {isLoading ? (
+                <i className="fa fa-spinner fa-spin"></i>
+              ) : (
+                "Add event"
+              )}
             </button>
           )}
         </div>
