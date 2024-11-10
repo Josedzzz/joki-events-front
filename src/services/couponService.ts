@@ -13,6 +13,7 @@ interface CreateCouponCredentials {
   discount: number;
   expirationDate: string;
   minPurchaseAmount: number;
+  couponType: string;
 }
 
 interface UpdateCouponCredentials {
