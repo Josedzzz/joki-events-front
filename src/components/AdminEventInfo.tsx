@@ -193,6 +193,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
     const errorMessage = validateEventData();
     if (errorMessage) {
       setError(errorMessage);
+      setIsLoading(false);
       return;
     }
 
@@ -242,6 +243,7 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
     const errorMessage = validateEventData();
     if (errorMessage) {
       setError(errorMessage);
+      setIsLoading(false);
       return;
     }
 
@@ -550,9 +552,9 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
                 type="button"
                 onClick={handleEventUpdate}
                 disabled={isLoading}
-                className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                className={`w-full md:w-1/5 text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
                   isLoading
-                    ? "bg-blue-200 cursor-not-allowed"
+                    ? "bg-blue-400 cursor-not-allowed"
                     : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
                 }`}
               >
@@ -566,9 +568,9 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
                 type="button"
                 onClick={handleEventDelete}
                 disabled={isLoading}
-                className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+                className={`w-full md:w-1/5 text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
                   isLoading
-                    ? "bg-blue-200 cursor-not-allowed"
+                    ? "bg-blue-400 cursor-not-allowed"
                     : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
                 }`}
               >
@@ -584,9 +586,9 @@ export default function AdminEventInfo({ event, onBack }: AdminEventInfoProps) {
               type="button"
               onClick={handleEventCreate}
               disabled={isLoading}
-              className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+              className={`w-full md:w-1/5 text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
                 isLoading
-                  ? "bg-blue-200 cursor-not-allowed"
+                  ? "bg-blue-400 cursor-not-allowed"
                   : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
               }`}
             >
