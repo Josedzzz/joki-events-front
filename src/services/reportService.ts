@@ -99,7 +99,9 @@ export const getReportsPDF = async (
       // handle the error response
       const errorResponse = await response.json();
       console.log(errorResponse);
-      throw new Error(errorResponse.message);
+      throw new Error(
+        "There are no statistics available for the selected dates to generate a PDF",
+      );
     }
 
     // Convert response to a blob for PDF handling
