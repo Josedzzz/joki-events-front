@@ -2,7 +2,7 @@ interface OrderLocalityCredentials {
   eventId: string;
   localityName: string;
   totalPaymentAmount: number;
-  ticketsSelected: number;
+  selectedTickets: number;
 }
 
 interface Event {
@@ -64,7 +64,7 @@ export const getAllClientEvents = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/get-paginated-events?page=${page}`,
+      `http://localhost:8080/api/client/get-paginated-events?page=${page}`,
       {
         method: "GET",
         headers: {
@@ -112,7 +112,7 @@ export const getSearchEvents = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/events/search-event?page=${page}`,
+      `http://localhost:8080/api/client/search-event?page=${page}`,
       {
         method: "POST",
         headers: {
@@ -161,7 +161,7 @@ export const orderLocality = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/order-locality/${userId}`,
+      `http://localhost:8080/api/client/${userId}/order-locality`,
       {
         method: "POST",
         headers: {
