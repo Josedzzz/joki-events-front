@@ -13,6 +13,7 @@ export default function UserAccount() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * function to validate if a string contains only numbers
@@ -94,6 +95,8 @@ export default function UserAccount() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const message = await updateClient({
         phone,
@@ -110,6 +113,8 @@ export default function UserAccount() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -120,6 +125,7 @@ export default function UserAccount() {
   const handleDeleteAccount = async () => {
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     try {
       const response = await deleteClientAccount();
@@ -130,6 +136,8 @@ export default function UserAccount() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -216,17 +224,35 @@ export default function UserAccount() {
           <div className="justify-between grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button
               type="submit"
-              className="w-full text-slate-50 font-bold p-2 border-4 border-red-400 rounded-xl hover:bg-red-400 transition duration-300 ease-in-out transform hover:scale-105"
               onClick={handleDeleteAccount}
+              className={`text-custom-white font-bold p-2 border-4 border-blue-400 rounded-xl w-full ${
+                isLoading
+                  ? "cursor-not-allowed"
+                  : "hover:bg-blue-400 hover:text-custom-white transition duration-300 ease-in-out transform hover:scale-105"
+              }`}
+              disabled={isLoading}
             >
-              Delete account
+              {isLoading ? (
+                <i className="fa fa-spinner fa-spin"></i>
+              ) : (
+                "Delete Account"
+              )}
             </button>
             <button
               type="submit"
-              className="w-full text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
               onClick={handleAccountUpdate}
+              className={`text-custom-white font-bold p-2 border-4 border-blue-400 rounded-xl w-full ${
+                isLoading
+                  ? "cursor-not-allowed"
+                  : "hover:bg-blue-400 hover:text-custom-white transition duration-300 ease-in-out transform hover:scale-105"
+              }`}
+              disabled={isLoading}
             >
-              Update account information
+              {isLoading ? (
+                <i className="fa fa-spinner fa-spin"></i>
+              ) : (
+                "Update Account"
+              )}
             </button>
           </div>
         </form>
