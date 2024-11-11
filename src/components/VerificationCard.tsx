@@ -7,6 +7,7 @@ export default function VerificationCard() {
   const [verificationCode, setVerificationCode] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * Handles the submission of the verification code form
@@ -16,11 +17,10 @@ export default function VerificationCard() {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setIsLoading(true);
 
     try {
-      const message = await verifyCode({
-        verificationCode: verificationCode,
-      });
+      const message = await verifyCode(verificationCode);
       setSuccess(message);
       navigate("/user-dashboard");
     } catch (error) {
@@ -29,6 +29,8 @@ export default function VerificationCard() {
       } else {
         setError("An unexpected error occurred.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -48,9 +50,14 @@ export default function VerificationCard() {
           />
           <button
             type="submit"
-            className="w-full text-slate-50 font-bold p-2 text-sm border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+            disabled={isLoading}
+            className={`w-full text-slate-50 font-bold p-2 mb-6 text-sm border-4 border-blue-400 rounded-xl ${
+              isLoading
+                ? "bg-blue-400 cursor-not-allowed"
+                : "hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+            }`}
           >
-            Verify
+            {isLoading ? <i className="fa fa-spinner fa-spin"></i> : "Verify"}
           </button>
         </form>
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
