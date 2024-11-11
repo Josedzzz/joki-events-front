@@ -1,14 +1,8 @@
-interface VerifyCodeCredentials {
-  verificationCode: string;
-}
-
 interface Response {
   message: string;
 }
 
-export const verifyCode = async (
-  credentials: VerifyCodeCredentials,
-): Promise<string> => {
+export const verifyCode = async (code: string): Promise<string> => {
   const clientId = localStorage.getItem("userId");
 
   // Get the cookie token
@@ -19,14 +13,13 @@ export const verifyCode = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/${clientId}/verify`,
+      `http://localhost:8080/api/client/${clientId}/verify?verificationCode=${code}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
-        body: JSON.stringify(credentials),
       },
     );
 
