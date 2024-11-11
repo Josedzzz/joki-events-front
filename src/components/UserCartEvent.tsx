@@ -30,7 +30,7 @@ export default function UserCartEvent({ userEvent }: UserCartEventProps) {
         eventId: userEvent.eventId,
         localityName: userEvent.localityName,
         totalPaymentAmount: userEvent.totalPaymentAmount,
-        ticketsSelected: userEvent.numTicketsSelected,
+        selectedTickets: userEvent.numTicketsSelected,
       });
       setSuccess(response.message);
       // reload the page after successfully deletion

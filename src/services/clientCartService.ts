@@ -26,7 +26,7 @@ interface CredentialsDeleteCartLocality {
   eventId: string;
   localityName: string;
   totalPaymentAmount: number;
-  ticketsSelected: number;
+  selectedTickets: number;
 }
 
 interface ApiResponse {
@@ -53,7 +53,7 @@ export const getClientShoppingCart = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/load-shopping-cart/${userId}?page=${page}`,
+      `http://localhost:8080/api/client/${userId}/load-shopping-cart?page=${page}`,
       {
         method: "GET",
         headers: {
@@ -101,7 +101,7 @@ export const deleteLocalityOrder = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/clients/cancel-locality-order/${userId}`,
+      `http://localhost:8080/api/client/${userId}/cancel-locality-order`,
       {
         method: "POST",
         headers: {
