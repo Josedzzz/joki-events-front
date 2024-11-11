@@ -22,7 +22,7 @@ export default function AdminReportCard({ report }: AdminReportCardProps) {
           {report.localityStats.map((locality, index) => (
             <div
               key={index}
-              className="bg-gray-800 p-3 rounded-lg mb-2 border border-blue-400 shadow-inner"
+              className="bg-custom-black p-3 rounded-lg mb-2 border border-blue-400 shadow-inner"
             >
               <p className="text-custom-white font-semibold">
                 {locality.localityName}
