@@ -49,22 +49,20 @@ export default function AdminReports() {
     }
   };
 
-  // Handler for generating the reports
-  const handleGenerateReportsPDF = async () => {
-    // Validation for year and month inputs
+  // Handler for generating the PDF report
+  const handleGeneratePDF = async () => {
     if (!year || !month) {
       setError("Please enter both year and month.");
       return;
     }
 
-    if (!/^\d{4}$/.test(year)) {
-      setError("Please enter a valid 4-digit year.");
-      return;
-    }
-
-    const monthNumber = Number(month);
-    if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
-      setError("Please enter a valid month between 1 and 12.");
+    if (
+      !/^\d{4}$/.test(year) ||
+      isNaN(Number(month)) ||
+      Number(month) < 1 ||
+      Number(month) > 12
+    ) {
+      setError("Please ensure year and month are valid.");
       return;
     }
 
@@ -72,13 +70,12 @@ export default function AdminReports() {
     setError("");
 
     try {
-      const response = await getReportsPDF(month, year);
-      console.log(response);
+      await getReportsPDF(month, year);
     } catch (error) {
       setError(
         error instanceof Error
           ? error.message
-          : "An unexpected error occurred.",
+          : "An unexpected error occurred while generating the PDF.",
       );
     } finally {
       setLoading(false);
@@ -133,21 +130,35 @@ export default function AdminReports() {
         </button>
 
         <button
-          onClick={handleGenerateReportsPDF}
-          className="text-blue-400 font-bold p-2 border-4 border-blue-400 rounded-xl w-full hover:bg-blue-400 hover:text-custom-white transition duration-300 ease-in-out transform hover:scale-105"
+          onClick={handleGeneratePDF}
+          className={`text-blue-400 font-bold p-2 border-4 border-blue-400 rounded-xl w-full ${
+            loading
+              ? "text-custom-white cursor-not-allowed"
+              : "hover:bg-blue-400 hover:text-custom-white transition duration-300 ease-in-out transform hover:scale-105"
+          }`}
+          disabled={loading}
         >
-          Generate Report as PDF
+          {loading ? (
+            <i className="fa fa-spinner fa-spin"></i>
+          ) : (
+            "Generate report as PDF"
+          )}
         </button>
       </div>
 
       {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
 
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
-        {reports.map((report) => (
-          <AdminReportCard key={report.eventId} report={report} />
-        ))}
+        {reports.length > 0 ? (
+          reports.map((report) => (
+            <AdminReportCard key={report.eventId} report={report} />
+          ))
+        ) : (
+          <p className="text-slate-200 mt-4 text-center">
+            There are no statistics available for the selected dates.
+          </p>
+        )}
       </div>
     </div>
   );
 }
-

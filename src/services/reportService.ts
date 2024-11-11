@@ -77,7 +77,7 @@ export const getReports = async (
 export const getReportsPDF = async (
   month: string,
   year: string,
-): Promise<ApiResponse> => {
+): Promise<void> => {
   // get the cookie token
   const authToken = document.cookie
     .split("; ")
@@ -86,11 +86,10 @@ export const getReportsPDF = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/get-report-events-pdf?month=${month}&year=${year}`,
+      `http://localhost:8080/api/admin/get-reports-events-pdf?month=${month}&year=${year}`,
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
       },
@@ -98,20 +97,27 @@ export const getReportsPDF = async (
 
     if (!response.ok) {
       // handle the error response
-      const errorResponse: ApiResponse = await response.json();
+      const errorResponse = await response.json();
       console.log(errorResponse);
       throw new Error(errorResponse.message);
     }
 
-    const successResponse: ApiResponse = await response.json();
+    // Convert response to a blob for PDF handling
+    const blob = await response.blob();
 
-    if ("data" in successResponse) {
-      return successResponse;
-    } else {
-      throw new Error("Unexpected response format");
-    }
+    // Create a temporary URL for the blob and open/download the PDF
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `Report_${year}_${month}.pdf`; // Optional: Set a download filename
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    a.remove();
+    window.URL.revokeObjectURL(url);
   } catch (error) {
-    console.error("Error obtaining the reports: ", error);
+    console.error("Error obtaining the PDF report: ", error);
     throw error;
   }
 };
