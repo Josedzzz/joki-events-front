@@ -37,7 +37,13 @@ export default function AdminReports() {
 
     try {
       const response = await getReports(month, year);
-      setReports(response.data);
+
+      if (response.data.length === 0) {
+        setError("No statistics available for the selected dates.");
+        setReports([]);
+      } else {
+        setReports(response.data);
+      }
     } catch (error) {
       setError(
         error instanceof Error
@@ -149,15 +155,9 @@ export default function AdminReports() {
       {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
 
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
-        {reports.length > 0 ? (
-          reports.map((report) => (
-            <AdminReportCard key={report.eventId} report={report} />
-          ))
-        ) : (
-          <p className="text-slate-200 mt-4 text-center">
-            There are no statistics available for the selected dates.
-          </p>
-        )}
+        {reports.map((report) => (
+          <AdminReportCard key={report.eventId} report={report} />
+        ))}
       </div>
     </div>
   );
