@@ -19,6 +19,7 @@ export default function UserEventInfo({
   const [ticketsSelected, setTicketsSelected] = useState(1);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   /**
    * change the selected locality and the tickets quantity
@@ -41,8 +42,10 @@ export default function UserEventInfo({
         eventId: userEvent.id,
         localityName: selectedLocality.name,
         totalPaymentAmount: selectedLocality.price * ticketsSelected,
-        ticketsSelected: ticketsSelected,
+        selectedTickets: ticketsSelected,
       };
+
+      setIsLoading(true);
 
       try {
         const response = await orderLocality(credentials);
@@ -53,6 +56,8 @@ export default function UserEventInfo({
         } else {
           setError("An unexpected error occurred.");
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -158,9 +163,18 @@ export default function UserEventInfo({
         {selectedLocality && (
           <button
             onClick={handleOrderLocality}
-            className="mt-4 text-slate-50 font-bold p-2 border-4 border-blue-400 rounded-xl hover:bg-blue-400 transition duration-300 ease-in-out transform hover:scale-105"
+            className={`mt-4 text-custom-white font-bold p-2 border-4 border-blue-400 rounded-xl ${
+              isLoading
+                ? "cursor-not-allowed"
+                : "hover:bg-blue-400 hover:text-custom-white transition duration-300 ease-in-out transform hover:scale-105"
+            }`}
+            disabled={isLoading}
           >
-            <i className="fa-solid fa-cart-shopping mr-1"></i> Add to cart
+            {isLoading ? (
+              <i className="fa fa-spinner fa-spin"></i>
+            ) : (
+              "Add to the cart"
+            )}
           </button>
         )}
 
