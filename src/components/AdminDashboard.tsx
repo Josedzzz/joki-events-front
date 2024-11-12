@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminEvents from "./AdminEvents";
 import AdminCoupons from "./AdminCoupons";
 import AdminReports from "./AdminReports";
 import AdminHeader from "./AdminHeader";
 import AdminAccount from "./AdminAccount";
+import { refreshJwtTokenAdmin } from "../services/authService";
 export default function AdminDashboard() {
   // use state to set the content
   const [content, setContent] = useState<string>("events");
@@ -15,6 +16,18 @@ export default function AdminDashboard() {
   const toggleContent = (contentName: string) => {
     setContent(contentName);
   };
+
+  // refresh the token
+  useEffect(() => {
+    const refreshToken = async () => {
+      try {
+        await refreshJwtTokenAdmin();
+      } catch (error) {
+        console.error("Error refreshing token", error);
+      }
+    };
+    refreshToken();
+  }, []);
 
   return (
     <div className="min-h-screen bg-custom-black flex flex-col">
