@@ -79,7 +79,7 @@ export const getAllEvents = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/get-paginated-events?page=${page}`,
+      `https://joki-events-production.up.railway.app/api/admin/get-paginated-events?page=${page}`,
       {
         method: "GET",
         headers: {
@@ -126,7 +126,7 @@ export const createEvent = async (
 
   try {
     const response = await fetch(
-      "http://localhost:8080/api/admin/create-event",
+      "https://joki-events-production.up.railway.app/api/admin/create-event",
       {
         method: "POST",
         headers: {
@@ -176,7 +176,7 @@ export const updateEvent = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${eventId}/update-event`,
+      `https://joki-events-production.up.railway.app/api/admin/${eventId}/update-event`,
       {
         method: "POST",
         headers: {
@@ -222,7 +222,7 @@ export const deleteEvent = async (eventId: string): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${eventId}/delete-event`,
+      `https://joki-events-production.up.railway.app/api/admin/${eventId}/delete-event`,
       {
         method: "POST",
         headers: {

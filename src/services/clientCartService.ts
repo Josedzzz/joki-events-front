@@ -53,7 +53,7 @@ export const getClientShoppingCart = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/load-shopping-cart?page=${page}`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/load-shopping-cart?page=${page}`,
       {
         method: "GET",
         headers: {
@@ -101,7 +101,7 @@ export const deleteLocalityOrder = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/cancel-locality-order`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/cancel-locality-order`,
       {
         method: "POST",
         headers: {

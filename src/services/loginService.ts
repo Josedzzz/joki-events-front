@@ -32,7 +32,7 @@ export const login = async (
 ): Promise<SuccessResponse> => {
   try {
     const response = await fetch(
-      `http://localhost:8080/auth/login-${typeUser}`,
+      `https://joki-events-production.up.railway.app/auth/login-${typeUser}`,
       {
         method: "POST",
         headers: {

@@ -44,7 +44,7 @@ export const getReports = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/get-report-events?month=${month}&year=${year}`,
+      `https://joki-events-production.up.railway.app/api/admin/get-report-events?month=${month}&year=${year}`,
       {
         method: "GET",
         headers: {
@@ -86,7 +86,7 @@ export const getReportsPDF = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/get-reports-events-pdf?month=${month}&year=${year}`,
+      `https://joki-events-production.up.railway.app/api/admin/get-reports-events-pdf?month=${month}&year=${year}`,
       {
         method: "GET",
         headers: {
