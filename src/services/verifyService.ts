@@ -13,7 +13,7 @@ export const verifyCode = async (code: string): Promise<string> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${clientId}/verify?verificationCode=${code}`,
+      `https://joki-events-production.up.railway.app/api/client/${clientId}/verify?verificationCode=${code}`,
       {
         method: "POST",
         headers: {

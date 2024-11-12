@@ -49,7 +49,7 @@ export const updateClient = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/update`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/update`,
       {
         method: "POST",
         headers: {
@@ -97,7 +97,7 @@ export const getClientAccountInfo = async (): Promise<ClientInfoResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/get-client-account-info`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/get-client-account-info`,
       {
         method: "GET",
         headers: {
@@ -144,7 +144,7 @@ export const deleteClientAccount = async (): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/delete-account`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/delete-account`,
       {
         method: "POST",
         headers: {

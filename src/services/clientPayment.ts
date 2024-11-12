@@ -19,7 +19,7 @@ export const getLinkClientPayment = async (): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/payment/${userId}/create-payment`,
+      `https://joki-events-production.up.railway.app/api/payment/${userId}/create-payment`,
       {
         method: "POST",
         headers: {
@@ -65,7 +65,7 @@ export const applyCoupon = async (couponName: string): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/apply-coupon?couponName=${couponName}`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/apply-coupon?couponName=${couponName}`,
       {
         method: "POST",
         headers: {

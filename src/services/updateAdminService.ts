@@ -47,7 +47,7 @@ export const updateAdmin = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${adminId}/update`,
+      `https://joki-events-production.up.railway.app/api/admin/${adminId}/update`,
       {
         method: "POST",
         headers: {
@@ -95,7 +95,7 @@ export const getAdminAccountInfo = async (): Promise<AdminInfoResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${adminId}/get-admin-account-info`,
+      `https://joki-events-production.up.railway.app/api/admin/${adminId}/get-admin-account-info`,
       {
         method: "GET",
         headers: {

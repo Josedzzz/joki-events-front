@@ -64,7 +64,7 @@ export const getAllClientEvents = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/get-paginated-events?page=${page}`,
+      `https://joki-events-production.up.railway.app/api/client/get-paginated-events?page=${page}`,
       {
         method: "GET",
         headers: {
@@ -112,7 +112,7 @@ export const getSearchEvents = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/search-event?page=${page}`,
+      `https://joki-events-production.up.railway.app/api/client/search-event?page=${page}`,
       {
         method: "POST",
         headers: {
@@ -161,7 +161,7 @@ export const orderLocality = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/order-locality`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/order-locality`,
       {
         method: "POST",
         headers: {

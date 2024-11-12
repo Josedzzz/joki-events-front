@@ -50,7 +50,7 @@ export const getAllCoupons = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/client/${userId}/purchase-history?page=${page}`,
+      `https://joki-events-production.up.railway.app/api/client/${userId}/purchase-history?page=${page}`,
       {
         method: "GET",
         headers: {

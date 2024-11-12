@@ -27,12 +27,15 @@ export const refreshJwtToken = async () => {
     const refreshThreshold = 5 * 60 * 1000; // 5 minutos antes de la expiracion
 
     if (timeUntilExpiration < refreshThreshold) {
-      const response = await fetch("http://localhost:8080/auth/refresh-token", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://joki-events-production.up.railway.app/auth/refresh-token",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
@@ -72,12 +75,15 @@ export const refreshJwtTokenAdmin = async () => {
     const refreshThreshold = 5 * 60 * 1000; // 5 minutos antes de la expiracion
 
     if (timeUntilExpiration < refreshThreshold) {
-      const response = await fetch("http://localhost:8080/auth/refresh-token", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://joki-events-production.up.railway.app/auth/refresh-token",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
