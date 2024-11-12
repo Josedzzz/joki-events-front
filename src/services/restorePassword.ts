@@ -24,7 +24,7 @@ export const sendRecoverPasswordCode = async (
 ): Promise<ApiResponse> => {
   try {
     const response = await fetch(
-      `http://localhost:8080/auth/send-recover-password-code`,
+      `https://joki-events-production.up.railway.app/auth/send-recover-password-code`,
       {
         method: "POST",
         headers: {
@@ -65,7 +65,7 @@ export const recoverPasswordCode = async (
 ): Promise<ApiResponse> => {
   try {
     const response = await fetch(
-      `http://localhost:8080/auth/recover-password`,
+      `https://joki-events-production.up.railway.app/auth/recover-password`,
       {
         method: "POST",
         headers: {

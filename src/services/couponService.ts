@@ -54,7 +54,7 @@ export const getAllCoupons = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/get-paginated-coupons?page=${page}`,
+      `https://joki-events-production.up.railway.app/api/admin/get-paginated-coupons?page=${page}`,
       {
         method: "GET",
         headers: {
@@ -101,7 +101,7 @@ export const createCoupon = async (
 
   try {
     const response = await fetch(
-      "http://localhost:8080/api/admin/create-coupon",
+      "https://joki-events-production.up.railway.app/api/admin/create-coupon",
       {
         method: "POST",
         headers: {
@@ -150,7 +150,7 @@ export const updateCoupon = async (
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${couponId}/update-coupon`,
+      `https://joki-events-production.up.railway.app/api/admin/${couponId}/update-coupon`,
       {
         method: "POST",
         headers: {
@@ -196,7 +196,7 @@ export const deleteCoupon = async (couponId: string): Promise<ApiResponse> => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/admin/${couponId}/delete-coupon`,
+      `https://joki-events-production.up.railway.app/api/admin/${couponId}/delete-coupon`,
       {
         method: "POST",
         headers: {
