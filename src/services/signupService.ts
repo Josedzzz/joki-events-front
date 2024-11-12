@@ -30,7 +30,7 @@ export const signup = async (
 ): Promise<SuccessResponse> => {
   try {
     const response = await fetch(
-      "https://joki-events-production.up.railway.apps/auth/register-client",
+      "https://joki-events-production.up.railway.app/auth/register-client",
       {
         method: "POST",
         headers: {
