@@ -29,13 +29,16 @@ export const signup = async (
   credentials: signupCredentials,
 ): Promise<SuccessResponse> => {
   try {
-    const response = await fetch("http://localhost:8080/auth/register-client", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "https://localhost:8080/auth/register-client",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
       },
-      body: JSON.stringify(credentials),
-    });
+    );
 
     if (!response.ok) {
       // Handle the error response
