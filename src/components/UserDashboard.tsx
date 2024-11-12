@@ -28,7 +28,7 @@ export default function UserDashboard() {
       }
     };
     refreshToken();
-  }, []);
+  }, [content]);
 
   return (
     <div className="min-h-screen bg-custom-black flex flex-col">
