@@ -15,16 +15,6 @@ export default function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
 
   /**
-   * Helper function to validate the email format
-   * @param email the emial to be validate
-   * @returns
-   */
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  /**
    * Helper function to validate the admin username (at least 3 characters)
    * @param username the username to be validate
    * @returns
@@ -74,10 +64,6 @@ export default function LoginCard() {
         setSuccess(message);
         navigate("/admin-dashboard");
       } else {
-        if (!validateEmail(email)) {
-          setError("Please enter a valid email address");
-          return;
-        }
         if (!validatePassword(password)) {
           setError("Password must be at least 4 characters long");
           return;
